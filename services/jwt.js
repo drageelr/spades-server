@@ -31,7 +31,7 @@ exports.verify = async (req, res, next) => {
         let teamReq = await Team.findById(_id);
         if(teamReq)
         {
-            req.body._id = _id;
+            req.body._id = teamReq._id;
             next();
         }
         else

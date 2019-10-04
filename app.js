@@ -5,7 +5,7 @@ var mongoose = require('./services/mongoose');
 var bodyParser = require('body-parser');
 var jwt = require('./services/jwt');
 var portalController = require('./controllers/portal.controller');
-var portalValidation = require('../validations/portal.validation');
+var portalValidation = require('./validations/portal.validation');
 const validator = require('express-validation');
 
 var apiRoute = require('./routes/api.route');

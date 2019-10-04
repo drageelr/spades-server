@@ -5,6 +5,8 @@ var mongoose = require('./services/mongoose');
 var bodyParser = require('body-parser');
 var jwt = require('./services/jwt');
 var portalController = require('./controllers/portal.controller');
+var portalValidation = require('../validations/portal.validation');
+const validator = require('express-validation');
 
 var apiRoute = require('./routes/api.route');
 
@@ -40,7 +42,7 @@ app.use('/api', apiRoute);
 
 app.use('/portal/portal.html', jwt.verify, portalController.checkReg);
 
-app.post('/portal/submit', jwt.verify, portalController.submit);
+app.post('/portal/submit', jwt.verify, validator(portalValidation.portalSchema), portalController.submit);
 
 app.use('/portal', express.static('portal'));
 

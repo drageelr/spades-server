@@ -27,6 +27,14 @@ const teamSchema = new Schema({
     active: {
         type: Boolean,
         required: true
+    },
+    registered: {
+        type: Boolean,
+    },
+    teamNum:
+    {
+        type: Number,
+        required: true,   
     }
 }, {
     timestamps: true

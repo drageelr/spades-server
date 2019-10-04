@@ -4,6 +4,32 @@ var uuidv1 = require('uuidv1');
 var transporter = require('../services/transporter');
 var jwt = require('../services/jwt');
 var Team = require('../models/team.model');
+var Counter = require('../models/counter.model');
+
+async function getTeamNum()
+{
+    try
+    {
+        let counter = await Counter.find({});
+        if(!counter[0])
+        {
+            let counterObj = new Counter({count: 1});
+            await counterObj.save();
+            return 1;
+        }
+        else
+        {
+            let num = counter[0].count + 1;
+            await Counter.findByIdAndUpdate(counter[0]._id, {count: num});
+            return num;
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
 
 exports.register = async (req, res, next) => {
     // Store params
@@ -22,8 +48,10 @@ exports.register = async (req, res, next) => {
         }
         else
         {
+            let num = await getTeamNum();
+
             // Save team to database
-            let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: false});
+            let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: false, teamNum: num});
             let saved = await teamObj.save();
 
             // Email activation key

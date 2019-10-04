@@ -67,15 +67,37 @@ exports.submit = async (req, res, next) =>
             await memberObj.save();
         }
 
+        await Team.findByIdAndUpdate(params._id, {registered: true});
+
         res.json({status: 200, message: 'Succesful'});
 
     }
     catch(e)
     {
         console.log(e);
-        
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 
     
+}
+
+exports.checkReg = async (req, res, next) =>
+{
+    try
+    {
+        let teamReq = await Team.findById(req.body._id);
+        if(!teamReq.registered)
+        {
+            next();
+        }
+        else
+        {
+            res.json({status: 200, message: 'You have already submitted the form!'});
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
 }

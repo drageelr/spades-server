@@ -23,7 +23,11 @@ let verification = (token) =>
 }
 
 exports.verify = async (req, res, next) => {
-    let token = req.headers.authorization.substring(7);
+    let token;
+    if(req.headers.authorization)
+    {
+        token = req.headers.authorization.substring(7);
+    } 
     let decoded = verification(token);
     if(decoded)
     {

@@ -17,7 +17,7 @@ exports.sendActivationKey = (emailTarget, activationKey) => {
         from: 'noreply <noreplyspades@gmail.com>',
         to: emailTarget,
         subject: 'Activation Key',
-        html: `<div><h1>Spades Account Confirmation!</h1><p>Click <a href="spades.lums.edu.pk/api/verify?key=${activationKey}">link</a> to activate your new account.</p></div><div><p>If you didn't sign up for this account then feel free to contact spadesIT1920@gmail.com.</p></div>`
+        html: `<div><h1>Spades Account Confirmation!</h1><p>Click <a href="http://spades.lums.edu.pk/api/verify?key=${activationKey}">link</a> to activate your new account.</p></div><div><p>If you didn't sign up for this account then feel free to contact spadesIT1920@gmail.com.</p></div>`
     };
     
     transporter.sendMail(mailOptions, function(error, info){

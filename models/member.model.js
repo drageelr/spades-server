@@ -9,6 +9,10 @@ const memberSchema = new Schema({
         required: true,
         ref: 'Team'
     },
+    memberID: {
+        type: Number,
+        unique: true
+    },
     firstName: {
         type: String,
         required: true

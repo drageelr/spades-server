@@ -31,10 +31,13 @@ const teamSchema = new Schema({
     registered: {
         type: Boolean,
     },
-    teamNum:
+    teamID: {
+        type: String,
+    },
+    headDelegateID:
     {
-        type: Number,
-        required: true,   
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Member'
     }
 }, {
     timestamps: true

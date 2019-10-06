@@ -51,7 +51,6 @@ const instSchema = new Schema({
         type: Boolean,
         required: true
     }
-    
 });
 
 module.exports = mongoose.model('Inst', instSchema);

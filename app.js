@@ -3,12 +3,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('./services/mongoose');
 var bodyParser = require('body-parser');
-var jwt = require('./services/jwt');
-var portalController = require('./controllers/portal.controller');
-var portalValidation = require('./validations/portal.validation');
-const validator = require('express-validation');
+
 
 var apiRoute = require('./routes/api.route');
+var portalRoute = require('./routes/portal.route');
 
 var app = express();
 
@@ -40,11 +38,8 @@ app.use(function (req, res, next) {
 
 app.use('/api', apiRoute);
 
-app.use('/portal/portal.html', jwt.verify, portalController.checkReg);
+app.use('/portal', portalRoute);
 
-app.post('/portal/submit', jwt.verify, validator(portalValidation.portalSchema), portalController.submit);
-
-app.use('/portal', express.static('portal'));
 
 mongoose.connect();
 

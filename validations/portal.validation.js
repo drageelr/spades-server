@@ -3,7 +3,7 @@
 var Joi = require('joi');
 
 exports.portalSchema = {
-    create: {
+    //create: {
         body: {
             inst: {
                 type: Joi.string().required().min(6).max(10),
@@ -16,7 +16,7 @@ exports.portalSchema = {
                 country: Joi.string().required().min(3).max(50),
                 advisor: Joi.boolean().required()
             },
-            member: [{
+            member: Joi.array().items({
                 firstName: Joi.string().required().min(3).max(50),
                 lastName: Joi.string().required().min(3).max(50),
                 birthDate: Joi.string().required().min(8).max(10),
@@ -31,7 +31,7 @@ exports.portalSchema = {
                 address: Joi.string().required().min(10).max(150),
                 city: Joi.string().required().min(3).max(50),
                 country: Joi.string().required().min(3).max(50)
-            }],
+            }).required(),
             event: {
                 number: Joi.number().required(),
                 logical: Joi.string().min(3).max(50),
@@ -45,5 +45,5 @@ exports.portalSchema = {
                 id: Joi.number().required()
             }
         }
-    }
+    //}
 }

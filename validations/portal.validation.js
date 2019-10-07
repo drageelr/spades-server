@@ -13,7 +13,7 @@ exports.portalSchema = {
                 phone: Joi.string().required().min(11).max(13),
                 principalEmail: Joi.string().required().email(),
                 address: Joi.string().required().min(10).max(150),
-                country: Joi.string().required().min(3).max(50),
+                country: Joi.string().required().min(2).max(50),
                 advisor: Joi.boolean().required()
             },
             member: Joi.array().items({

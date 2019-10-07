@@ -51,6 +51,8 @@ const instSchema = new Schema({
         type: Boolean,
         required: true
     }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Inst', instSchema);

@@ -129,7 +129,7 @@ exports.submit = async (req, res, next) =>
             params.member[i].memberID = i + 1;
             let memberObj = new Member(params.member[i]);
             let saved = await memberObj.save();
-            if(params.headDelegate.id == i - 1)
+            if(params.headDelegate.id == i + 1)
             {
                 headDID = saved._id;
             }
@@ -162,6 +162,46 @@ exports.checkReg = async (req, res, next) =>
         {
             res.json({status: 200, message: 'You have already submitted the form!'});
         }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.viewData = async (req, res, next) =>
+{
+    try
+    {
+        let resObj = {status: 200, message: 'Successful!'};
+        let _id = req.body._id;
+
+        let teamReq = await Team.findById(_id);
+        let instReq = await Inst.findOne({teamID: _id}, '-teamID -__v -_id');
+        let eventReq = await Event.findOne({teamID: _id}, '-teamID -__v -_id');
+        let membersReq = await Member.find({teamID: _id}, '-teamID -__v -_id');
+        let membersReqID = await Member.find({teamID: _id}, '_id');
+
+        resObj.teamID = teamReq.teamID;
+        resObj.timestamp = instReq.createdAt;
+        instReq.createdAt = undefined;
+        instReq.updatedAt = undefined;
+        resObj.inst = instReq;
+        resObj.event = eventReq;
+        resObj.member = [];
+        for(let i = 0; i < membersReq.length; i++)
+        {
+            if(teamReq.headDelegateID.toString() == membersReqID[i]._id.toString())
+            {
+                resObj.headDelegate = {
+                    id: i + 1
+                }
+            }
+            resObj.member[i] = membersReq[i];
+        }
+
+        res.json(resObj);
     }
     catch(e)
     {

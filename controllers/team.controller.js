@@ -23,7 +23,7 @@ exports.register = async (req, res, next) => {
         else
         {
             // Save team to database
-            let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: false});
+            let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: true});
             await teamObj.save();
 
             // Email activation key

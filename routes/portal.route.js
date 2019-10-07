@@ -12,6 +12,8 @@ router.use('/portal.html', jwt.verify, portalController.checkReg);
 
 router.post('/submit', jwt.verify, validator(portalValidation.portalSchema), portalController.submit);
 
+router.post('/data', jwt.verify, portalController.viewData);
+
 router.use('/', express.static('portal'));
 
 module.exports = router;

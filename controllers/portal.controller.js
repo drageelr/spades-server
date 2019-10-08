@@ -65,7 +65,7 @@ function submitValidation(params)
 
     for(let i = 0; i < params.member.length; i++)
     {
-        for(let m in params.member)
+        for(let m in params.member[i])
         {
             if(memberVal[m] == undefined)
             {
@@ -130,6 +130,7 @@ exports.submit = async (req, res, next) =>
     if(!errorObj.ok)
     {
         res.json({status: 400, message: errorObj.error});
+        return null;
     }
 
     try

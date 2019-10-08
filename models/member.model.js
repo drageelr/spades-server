@@ -70,6 +70,9 @@ const memberSchema = new Schema({
     country: {
         type: String,
         required: true
+    },
+    photo: {
+        type: String,
     }
 });
 

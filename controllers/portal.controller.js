@@ -48,6 +48,35 @@ async function getTeamNum()
     }
 }
 
+function submitValidation(params) 
+{
+    let instVal = {type: true, name: true, city: true, email: true, phone: true, principalEmail: true, address: true, country: true, advisor: true};
+    let memberVal = {firstName: true, lastName: true, birthDate: true, email: true, phone: true, gender: true, accomodation: true, cnic: true, firstNameGaurdian: true, lastNameGaurdian: true, phoneGaurdian: true, address: true, city: true, country: true, photo: true};
+    //let eventVal = {number: true, logical: true, mystery: true, engineering: true, ambassadorName: true, ambassadorPhone: true};
+    //let headDelegateVal = {id: true};
+
+    for(let i in params.inst)
+    {
+        if(instVal[i] == undefined)
+        {
+            return {ok: false, error: 'inst.' + i};
+        }
+    }
+
+    for(let i = 0; i < params.member.length; i++)
+    {
+        for(let m in params.member)
+        {
+            if(memberVal[m] == undefined)
+            {
+                return {ok: false, error: 'member[' + i + '].' + m};
+            }
+        }
+    }
+
+    return {ok: true, error: 'Nothing'};
+}
+
 exports.submit = async (req, res, next) =>
 {
     let params = req.body;
@@ -78,7 +107,8 @@ exports.submit = async (req, res, next) =>
                 phoneGaurdian: 'Member Gaurdian Phone',
                 address: 'Member Address',
                 city: 'Member City',
-                country: 'Member Country'
+                country: 'Member Country',
+                photo: 'Byte64 encoded photo',
             }],
             event: {
                 number: Number of events,
@@ -94,6 +124,13 @@ exports.submit = async (req, res, next) =>
             }
         }
     */
+
+    let errorObj = submitValidation(params);
+
+    if(!errorObj.ok)
+    {
+        res.json({status: 400, message: errorObj.error});
+    }
 
     try
     {

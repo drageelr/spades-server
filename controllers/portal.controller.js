@@ -134,7 +134,7 @@ exports.submit = async (req, res, next) =>
 
     try
     {
-        const idPrefixObj = {School: 'S', University: 'U', Privately: 'P'};
+        const idPrefixObj = {School: 'S', University: 'U', Privately_Uni: 'PU', Privately_Sch: 'PS'};
 
         let temaIDString = 'PSI-';
 

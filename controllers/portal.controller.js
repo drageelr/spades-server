@@ -115,6 +115,7 @@ exports.submit = async (req, res, next) =>
                 logical: 'Logical Event',
                 mystery: 'Mystery Event',
                 engineering: 'Engineering Event',
+                drogone: 'Boolean Value',
                 explain: 'Explaination of event choice (max 150 words)',
                 ambassadorName: 'Ambassador Name (if any)',
                 ambassadorPhone: 'Ambassador Phone (if any)'

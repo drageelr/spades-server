@@ -22,6 +22,9 @@ const eventSchema = new Schema({
     engineering: {
         type: String,
     },
+    drogone: {
+        type: Boolean
+    },
     explain: {
         type: String,
         required: true,

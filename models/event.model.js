@@ -14,16 +14,16 @@ const eventSchema = new Schema({
         required: true
     },
     logical: {
-        type: String,
+        type: String
     },
     mystery: {
-        type: String,
+        type: String
     },
     engineering: {
-        type: String,
+        type: String
     },
     drogone: {
-        type: Boolean
+        type: String
     },
     explain: {
         type: String,

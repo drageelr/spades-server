@@ -80,6 +80,7 @@ function submitValidation(params)
 exports.submit = async (req, res, next) =>
 {
     let params = req.body;
+    
     /*
         params = {
             inst: {
@@ -126,16 +127,24 @@ exports.submit = async (req, res, next) =>
         }
     */
 
-    let errorObj = submitValidation(params);
-
-    if(!errorObj.ok)
-    {
-        res.json({status: 400, message: errorObj.error});
-        return null;
-    }
-
     try
     {
+
+        let teamReq = await Team.findById(params._id, 'registered');
+        if(teamReq.registered)
+        {
+            res.json({status: 200, message: 'You have already submitted the form!'});
+            return null;
+        }
+
+        let errorObj = submitValidation(params);
+
+        if(!errorObj.ok)
+        {
+            res.json({status: 400, message: errorObj.error});
+            return null;
+        }
+
         const idPrefixObj = {School: 'S', University: 'U', Privately_Uni: 'PU', Privately_Sch: 'PS'};
 
         let temaIDString = 'PSI-';

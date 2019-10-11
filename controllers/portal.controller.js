@@ -133,7 +133,7 @@ exports.submit = async (req, res, next) =>
         let teamReq = await Team.findById(params._id, 'registered');
         if(teamReq.registered)
         {
-            res.json({status: 200, message: 'You have already submitted the form!'});
+            res.redirect('/portal/voucher.html');
             return null;
         }
 
@@ -204,7 +204,7 @@ exports.checkReg = async (req, res, next) =>
         let teamReq = await Team.findById(req.body._id);
         if(!teamReq.registered)
         {
-            res.next();
+            next();
         }
         else
         {

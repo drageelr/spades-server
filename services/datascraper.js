@@ -56,7 +56,7 @@ exports.AssembleData = async (req, res, next) =>
                 }
             }
 
-        res.json(resObj);
+        res.json(JSON.stringify(resObj));
     }
     catch(e)
     {

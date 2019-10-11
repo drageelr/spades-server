@@ -204,7 +204,7 @@ exports.checkReg = async (req, res, next) =>
         let teamReq = await Team.findById(req.body._id);
         if(!teamReq.registered)
         {
-            next();
+            res.redirect('/portal/voucher.html');
         }
         else
         {

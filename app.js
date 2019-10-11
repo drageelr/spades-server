@@ -35,6 +35,11 @@ app.use(function (req, res, next) {
     next();
 })
 
+app.use('/portal/temp.html', express.static('temp'));
+
+app.use('/', (req, res, next) => {
+    res.redirect('/portal/temp.html')
+})
 
 app.use('/api', apiRoute);
 

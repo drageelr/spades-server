@@ -19,7 +19,7 @@ exports.AssembleData = async (req, res, next) =>
                 resObj.teams[i][x] = teams[i][x];
             }
             resObj.teams[i].inst = {};
-            let inst = await Inst.findOne({teamID: teams[i]._id}, '-__v');
+            let inst = await Inst.findOne({teamID: teams[i]._id}, '-_id -__v');
             for(let x in inst)
             {
                 resObj.teams[i].inst[x] = inst[x];
@@ -31,11 +31,15 @@ exports.AssembleData = async (req, res, next) =>
                 resObj.teams[i].members[j] = {};
                 for(let x in members[j])
                 {
-                    resObj.teams[i].members[j][x] = members[j][x];
+                    if(x != '_id')
+                    {
+                        resObj.teams[i].members[j][x] = members[j][x];
+                    }
+                    resObj.teams[i].members[j][x] = members[j][x].toString();
                 }
             }
             resObj.teams[i].event = {};
-            let event = await Event.findOne({teamID: teams[i]._id}, '-__v');
+            let event = await Event.findOne({teamID: teams[i]._id}, '-_id -__v');
             for(let x in event)
             {
                 resObj.teams[i].event[x] = event[x]; 

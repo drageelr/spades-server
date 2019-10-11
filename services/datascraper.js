@@ -53,7 +53,16 @@ exports.AssembleData = async (req, res, next) =>
                 }
             }
 
-            fs.appendFile('data.txt', JSON.stringify(resObj, null, 4))
+            fs.appendFile('data.txt', JSON.stringify(resObj, null, 4), (err) =>
+            {
+                if (err)
+                {console.log(err)}
+                else
+                {
+                    console.log("Wrote to file!");
+                }
+                
+            })
 
         res.json({status: 200, message: "Successful!"});
     }

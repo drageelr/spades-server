@@ -20,6 +20,7 @@ exports.AssembleData = async (req, res, next) =>
             }
             resObj.teams[i].inst = {};
             let inst = await Inst.findOne({teamID: teams[i]._id}, '-__v');
+            console.log(inst);
             for(let x in inst)
             {
                 resObj.teams[i].inst[x] = inst[x];

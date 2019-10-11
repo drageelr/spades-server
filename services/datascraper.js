@@ -5,6 +5,7 @@ var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Event = require('../models/event.model');
 
+const tprop = ['_id', 'email', 'password', 'name', 'activationKey', 'active', 'registered', 'teamID', 'headDelegateID'];
 const iprop = ['teamID', 'type', 'name', 'city', 'email', 'phone', 'principalEmail', 'address', 'country', 'advisor'];
 const mprop = ['teamID', 'memberID', 'firstName', 'lastName', 'birthDate', 'email', 'phone', 'gender', 'accomodation', 'cnic', 'firstNameGaurdian', 'lastNameGaurdian', 'phoneGaurdian', 'address', 'city', 'country', 'photo'];
 const eprop = ['teamID', 'number', 'logical', 'mystery', 'engineering', 'drogone', 'explain', 'ambassadorName', 'ambassadorPhone'];
@@ -18,7 +19,7 @@ exports.AssembleData = async (req, res, next) =>
         for(let i = 0; i < teams.length; i++)
         {
             resObj[i] = {};
-            for(let x in teams[i])
+            for(let x of tprop)
             {
                 resObj[i][x] = teams[i][x];
             }

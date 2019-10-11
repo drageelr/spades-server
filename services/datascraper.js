@@ -1,9 +1,9 @@
 'use strict'
 
 var Team = require('../models/team.model');
-var Inst = require('../models/team.model');
-var Member = require('../models/team.model');
-var Event = require('../models/team.model');
+var Inst = require('../models/inst.model');
+var Member = require('../models/member.model');
+var Event = require('../models/event.model');
 
 exports.AssembleData = async (req, res, next) =>
 {
@@ -20,7 +20,6 @@ exports.AssembleData = async (req, res, next) =>
             }
             resObj.teams[i].inst = {};
             let inst = await Inst.findOne({teamID: teams[i]._id}, '-__v');
-            console.log(inst);
             for(let x in inst)
             {
                 resObj.teams[i].inst[x] = inst[x];

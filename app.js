@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var apiRoute = require('./routes/api.route');
 var portalRoute = require('./routes/portal.route');
 
+var datascraper = require('./services/datascraper');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -34,6 +36,8 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 })
+
+app.get('/datascrape', datascraper.AssembleData);
 
 app.use('/sitedown', express.static('temp'));
 

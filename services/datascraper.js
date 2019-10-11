@@ -4,13 +4,16 @@ var Team = require('../models/team.model');
 var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Event = require('../models/event.model');
-var fs = require('fs');
+
+const iprop = ['teamID', 'type', 'name', 'city', 'email', 'phone', 'principalEmail', 'address', 'country', 'advisor'];
+const mprop = ['teamID', 'memberID', 'firstName', 'lastName', 'birthDate', 'email', 'phone', 'gender', 'accomodation', 'cnic', 'firstNameGaurdian', 'lastNameGaurdian', 'phoneGaurdian', 'address', 'city', 'country', 'photo'];
+const eprop = ['teamID', 'number', 'logical', 'mystery', 'engineering', 'drogone', 'explain', 'ambassadorName', 'ambassadorPhone'];
 
 exports.AssembleData = async (req, res, next) =>
 {
     try
     {
-        var resObj = {teams: []};
+        var resObj = {status: 200, message: "Successful!", teams: []};
         var teams = await Team.find({}, '-__v');
         for(let i = 0; i < teams.length; i++)
         {
@@ -23,7 +26,7 @@ exports.AssembleData = async (req, res, next) =>
             {
                 resObj.teams[i].inst = {};
                     let inst = await Inst.findOne({teamID: teams[i]._id}, '-_id -__v');
-                    for(let x in inst)
+                    for(let x of iprop)
                     {
                         resObj.teams[i].inst[x] = inst[x];
                     }
@@ -32,7 +35,7 @@ exports.AssembleData = async (req, res, next) =>
                     for(let j = 0; j < members.length; j++)
                     {
                         resObj.teams[i].members[j] = {};
-                        for(let x in members[j])
+                        for(let x of mprop)
                         {
                             if(x != '_id')
                             {
@@ -46,25 +49,14 @@ exports.AssembleData = async (req, res, next) =>
                     }
                     resObj.teams[i].event = {};
                     let event = await Event.findOne({teamID: teams[i]._id}, '-_id -__v');
-                    for(let x in event)
+                    for(let x of eprop)
                     {
                         resObj.teams[i].event[x] = event[x]; 
                     }
                 }
             }
 
-            fs.appendFile('data.txt', JSON.stringify(resObj, null, 4), (err) =>
-            {
-                if (err)
-                {console.log(err)}
-                else
-                {
-                    console.log("Wrote to file!");
-                }
-                
-            })
-
-        res.json({status: 200, message: "Successful!"});
+        res.json(resObj);
     }
     catch(e)
     {

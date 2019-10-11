@@ -17,4 +17,4 @@ router.get('/admin.html', jwt.verifyAdmin);
 router.use('/', express.static('admin'));
 
 
-module.exports.router;
+module.exports = router;

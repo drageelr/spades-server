@@ -41,13 +41,13 @@ app.get('/datascrape', datascraper.AssembleData);
 
 app.use('/sitedown', express.static('temp'));
 
-// app.use('/api', (req, res, next) => {
-//     res.redirect('/sitedown/temp.html')
-// })
+app.use('/api', (req, res, next) => {
+    res.redirect('/sitedown/temp.html')
+})
 
-// app.use('/portal', (req, res, next) => {
-//     res.redirect('/sitedown/temp.html')
-// })
+app.use('/portal', (req, res, next) => {
+    res.redirect('/sitedown/temp.html')
+})
 
 app.use('/api', apiRoute);
 

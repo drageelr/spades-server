@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var apiRoute = require('./routes/api.route');
 var portalRoute = require('./routes/portal.route');
+var adminRoute = require('./routes/admin.route');
 
 var datascraper = require('./services/datascraper');
 
@@ -39,19 +40,21 @@ app.use(function (req, res, next) {
 
 app.get('/datascrape', datascraper.AssembleData);
 
-app.use('/sitedown', express.static('temp'));
+// app.use('/sitedown', express.static('temp'));
 
-app.use('/api', (req, res, next) => {
-    res.redirect('/sitedown/temp.html')
-})
+// app.use('/api', (req, res, next) => {
+//     res.redirect('/sitedown/temp.html')
+// })
 
-app.use('/portal', (req, res, next) => {
-    res.redirect('/sitedown/temp.html')
-})
+// app.use('/portal', (req, res, next) => {
+//     res.redirect('/sitedown/temp.html')
+// })
 
 app.use('/api', apiRoute);
 
 app.use('/portal', portalRoute);
+
+app.use('/admin', adminRoute);
 
 
 mongoose.connect();

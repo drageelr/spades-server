@@ -1,5 +1,7 @@
 'use strict'
 
+var config = require('../config/index').variables;
+
 const mongoose = require('mongoose')
 mongoose.Promise = require('bluebird')
 
@@ -13,7 +15,7 @@ process.exit(1)
 })
 
 exports.connect = () => {
-var mongoURI = 'mongodb://localhost:27017/spadesdb';
+var mongoURI = 'mongodb://localhost:27017/' + config.db;
 console.log('mongoURI: ' + mongoURI);
 mongoose.connect(mongoURI, {
     keepAlive: 1,

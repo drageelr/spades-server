@@ -11,7 +11,7 @@ const memberSchema = new Schema({
     },
     memberID: {
         type: Number,
-        unique: true
+        required: true
     },
     firstName: {
         type: String,

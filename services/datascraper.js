@@ -4,12 +4,13 @@ var Team = require('../models/team.model');
 var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Event = require('../models/event.model');
+var fs = require('fs');
 
 exports.AssembleData = async (req, res, next) =>
 {
     try
     {
-        var resObj = {status: 200, message: "Successful!", teams: []};
+        var resObj = {teams: []};
         var teams = await Team.find({}, '-__v');
         for(let i = 0; i < teams.length; i++)
         {
@@ -37,7 +38,10 @@ exports.AssembleData = async (req, res, next) =>
                             {
                                 resObj.teams[i].members[j][x] = members[j][x];
                             }
-                            resObj.teams[i].members[j][x] = members[j][x].toString();
+                            else
+                            {
+                                resObj.teams[i].members[j][x] = members[j][x].toString();
+                            }
                         }
                     }
                     resObj.teams[i].event = {};
@@ -49,7 +53,9 @@ exports.AssembleData = async (req, res, next) =>
                 }
             }
 
-        res.json(resObj);
+            fs.appendFile('data.txt', JSON.stringify(resObj, null, 4))
+
+        res.json({status: 200, message: "Successful!"});
     }
     catch(e)
     {

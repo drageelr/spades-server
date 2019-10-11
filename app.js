@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.use('/sitedown/temp.html', express.static('temp'));
+app.use('/sitedown', express.static('temp'));
 
 app.use('/api', (req, res, next) => {
     res.redirect('/sitedown/temp.html')

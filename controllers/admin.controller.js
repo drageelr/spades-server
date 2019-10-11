@@ -5,6 +5,8 @@ var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Admin = require('../models/admin.model');
 
+var jwt = require('../services/jwt');
+
 const tprop = ['_id','teamID', 'name', 'email', 'verified', 'paid'];
 
 function validateSearchParams(params)

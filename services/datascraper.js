@@ -13,45 +13,45 @@ exports.AssembleData = async (req, res, next) =>
 {
     try
     {
-        var resObj = {status: 200, message: "Successful!", teams: []};
+        var resObj = [];
         var teams = await Team.find({}, '-__v');
         for(let i = 0; i < teams.length; i++)
         {
-            resObj.teams[i] = {};
+            resObj[i] = {};
             for(let x in teams[i])
             {
-                resObj.teams[i][x] = teams[i][x];
+                resObj[i][x] = teams[i][x];
             }
             if(teams[i].registered)
             {
-                resObj.teams[i].inst = {};
+                resObj[i].inst = {};
                     let inst = await Inst.findOne({teamID: teams[i]._id}, '-_id -__v');
                     for(let x of iprop)
                     {
-                        resObj.teams[i].inst[x] = inst[x];
+                        resObj[i].inst[x] = inst[x];
                     }
-                    resObj.teams[i].members = [];
+                    resObj[i].members = [];
                     let members = await Member.find({teamID: teams[i]._id}, '-__v');
                     for(let j = 0; j < members.length; j++)
                     {
-                        resObj.teams[i].members[j] = {};
+                        resObj[i].members[j] = {};
                         for(let x of mprop)
                         {
                             if(x != '_id')
                             {
-                                resObj.teams[i].members[j][x] = members[j][x];
+                                resObj[i].members[j][x] = members[j][x];
                             }
                             else
                             {
-                                resObj.teams[i].members[j][x] = members[j][x].toString();
+                                resObj[i].members[j][x] = members[j][x].toString();
                             }
                         }
                     }
-                    resObj.teams[i].event = {};
+                    resObj[i].event = {};
                     let event = await Event.findOne({teamID: teams[i]._id}, '-_id -__v');
                     for(let x of eprop)
                     {
-                        resObj.teams[i].event[x] = event[x]; 
+                        resObj[i].event[x] = event[x]; 
                     }
                 }
             }

@@ -81,7 +81,7 @@ exports.verify = async (req, res, next) => {
         let teamReq = await Team.findOneAndUpdate({activationKey: params.key}, {active: true});
         if(teamReq)
         {
-            res.json({status: 200, message: 'Account Activated!'});
+            res.redirect('http://spades.lums.edu.pk/portal/verified.html');
         }
         else
         {

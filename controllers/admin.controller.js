@@ -206,7 +206,7 @@ exports.changeTeamID = async(req, res, next) =>
             if(teamReq)
             {
                 await Team.findOneAndUpdate({name: req.query.name}, {teamID: 'PSI-' + req.query.inst + '-' + req.query.num});
-                res.json({status: 200, message: 'Account Activated!'});
+                res.json({status: 200, message: 'Team ID changed!'});
             }
             else
             {

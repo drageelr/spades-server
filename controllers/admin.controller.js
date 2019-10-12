@@ -150,7 +150,7 @@ exports.deleteTeamData = async (req, res, next) =>
                 Inst.findOneAndDelete({teamID: teamReq._id});
                 Member.findOneAndDelete({teamID: teamReq._id});
                 Event.findOneAndDelete({teamID: teamReq._id});
-                Team.findOneAndDelete({teamID: teamReq._id});
+                Team.findOneAndDelete({_id: teamReq._id});
                 res.json({status: 200, message: 'Deletion Successful!'});
             }
             else

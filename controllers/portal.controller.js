@@ -15,7 +15,7 @@ async function getTeamNum()
         {
             let counterObj = new Counter({count: 1});
             await counterObj.save();
-            return 1;
+            return '00001';
         }
         else
         {

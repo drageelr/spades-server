@@ -40,6 +40,17 @@ exports.search = async (req, res, next) =>
 
         if(params.search.via != 'instName' && params.search.via != 'memberName')
         {
+            if(params.search.via == 'verified' || params.search.via == 'paid')
+            {
+                if(params.search.value == 'Y')
+                {
+                    params.search.value = true;
+                }
+                else
+                {
+                    params.search.value = false;
+                }
+            }
             let teams = await Team.find({[params.search.via]: params.search.value});
             for(let i = 0; i < teams.length; i++)
             {

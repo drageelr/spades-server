@@ -176,6 +176,7 @@ exports.activateTeam = async (req, res, next) =>
             if(teamReq)
             {
                 await Team.findOneAndUpdate({name: req.query.name}, {active: true});
+                res.json({status: 200, message: 'Account Activated!'});
             }
             else
             {

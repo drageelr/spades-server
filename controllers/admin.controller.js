@@ -51,7 +51,7 @@ exports.search = async (req, res, next) =>
                     params.search.value = false;
                 }
             }
-            let teams = await Team.find({[params.search.via]: params.search.value});
+            let teams = await Team.find({[params.search.via]: params.search.value, registered: true});
             for(let i = 0; i < teams.length; i++)
             {
                 resObj.teams[i] = {};

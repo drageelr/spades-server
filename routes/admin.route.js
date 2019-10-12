@@ -18,6 +18,8 @@ router.get('/delete', adminController.deleteTeamData);
 
 router.get('/activate', adminController.activateTeam);
 
+router.get('/cteamID', adminController.changeTeamID);
+
 router.use('/', express.static('admin'));
 
 

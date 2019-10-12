@@ -195,3 +195,28 @@ exports.activateTeam = async (req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.changeTeamID = async(req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let teamReq = await Team.findOne({name: req.query.name});
+            if(teamReq)
+            {
+                await Team.findOneAndUpdate({name: req.query.name}, {teamID: 'PSI-' + req.query.inst + req.query.num});
+                res.json({status: 200, message: 'Account Activated!'});
+            }
+            else
+            {
+                res.json({status: 400, message: 'No Such Team Exists!'});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

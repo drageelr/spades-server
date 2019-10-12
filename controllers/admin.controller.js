@@ -147,10 +147,10 @@ exports.deleteTeamData = async (req, res, next) =>
             let teamReq = await Team.findOne({name: req.query.name});
             if(teamReq)
             {
-                Inst.findOneAndDelete({teamID: teamReq._id});
-                Member.findOneAndDelete({teamID: teamReq._id});
-                Event.findOneAndDelete({teamID: teamReq._id});
-                Team.findOneAndDelete({_id: teamReq._id});
+                await Inst.findOneAndDelete({teamID: teamReq._id});
+                await Member.findOneAndDelete({teamID: teamReq._id});
+                await Event.findOneAndDelete({teamID: teamReq._id});
+                await Team.findOneAndDelete({_id: teamReq._id});
                 res.json({status: 200, message: 'Deletion Successful!'});
             }
             else
@@ -175,7 +175,7 @@ exports.activateTeam = async (req, res, next) =>
             let teamReq = await Team.findOne({name: req.query.name});
             if(teamReq)
             {
-                Team.findOneAndUpdate({name: req.query.name}, {active: true});
+                await Team.findOneAndUpdate({name: req.query.name}, {active: true});
             }
             else
             {

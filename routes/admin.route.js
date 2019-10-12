@@ -14,6 +14,10 @@ router.post('/data', jwt.verifyAdmin, portalController.viewData);
 
 router.get('/admin.html', jwt.verifyAdmin);
 
+router.get('/delete', adminController.deleteTeamData);
+
+router.get('/activate', adminController.activateTeam);
+
 router.use('/', express.static('admin'));
 
 

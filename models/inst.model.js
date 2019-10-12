@@ -12,8 +12,6 @@ const instSchema = new Schema({
     type: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 10
     },
     name: {
         type: String,

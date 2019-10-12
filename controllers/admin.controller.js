@@ -4,8 +4,11 @@ var Team = require('../models/team.model');
 var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Admin = require('../models/admin.model');
+var Event = require('../models/event.model');
 
 var jwt = require('../services/jwt');
+
+const password = 'iamhammad';
 
 const tprop = ['_id','teamID', 'name', 'email', 'verified', 'paid'];
 
@@ -132,5 +135,57 @@ exports.login = async (req, res, next) => {
     {
         console.log(e);
         res.json(e.errors);
+    }
+}
+
+exports.deleteTeamData = async (req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let teamReq = await Team.findOne({name: req.query.name});
+            if(teamReq)
+            {
+                Inst.findOneAndDelete({teamID: teamReq._id});
+                Member.findOneAndDelete({teamID: teamReq._id});
+                Event.findOneAndDelete({teamID: teamReq._id});
+                Team.findOneAndDelete({teamID: teamReq._id});
+                res.json({status: 200, message: 'Deletion Successful!'});
+            }
+            else
+            {
+                res.json({status: 400, message: 'No Such Team Exists!'});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.activateTeam = async (req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let teamReq = await Team.findOne({name: req.query.name});
+            if(teamReq)
+            {
+                Team.findOneAndUpdate({name: req.query.name}, {active: true});
+            }
+            else
+            {
+                res.json({status: 400, message: 'No Such Team Exists!'});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
     }
 }

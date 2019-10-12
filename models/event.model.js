@@ -35,8 +35,6 @@ const eventSchema = new Schema({
     },
     ambassadorPhone: {
         type: String,
-        minlength: 11,
-        maxlength: 13
     }
 });
 

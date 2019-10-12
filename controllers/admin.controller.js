@@ -148,6 +148,11 @@ exports.deleteTeamData = async (req, res, next) =>
             if(teamReq)
             {
                 await Inst.findOneAndDelete({teamID: teamReq._id});
+                let member = await Member.findOneAndDelete({teamID: teamReq._id});
+                while(member)
+                {
+                    member = await Member.findOneAndDelete({teamID: teamReq._id});
+                }
                 await Member.findOneAndDelete({teamID: teamReq._id});
                 await Event.findOneAndDelete({teamID: teamReq._id});
                 await Team.findOneAndDelete({_id: teamReq._id});

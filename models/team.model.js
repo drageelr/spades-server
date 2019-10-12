@@ -30,9 +30,15 @@ const teamSchema = new Schema({
     },
     registered: {
         type: Boolean,
+        required: true
     },
     paid: {
-        type: Boolean
+        type: Boolean,
+        required: true
+    },
+    verified: {
+        type: Boolean,
+        required: true
     },
     teamID: {
         type: String,

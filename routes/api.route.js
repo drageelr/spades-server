@@ -16,6 +16,8 @@ router.post('/login/submit', validator(teamValidation.loginSchema), teamControll
 
 router.get('/verify', teamController.verify);
 
+router.post('/forgotpassword', teamController.forgotPassword);
+
 router.get('/user', jwt.verify ,(req, res, next) => {
     res.json({status: 200, message: 'User Authorized!'});
 });

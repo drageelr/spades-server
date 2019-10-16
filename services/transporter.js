@@ -28,3 +28,20 @@ exports.sendActivationKey = (emailTarget, activationKey) => {
     }
     });
 }
+
+exports.sendPassword = (emailTarget, password) => {
+    var mailOptions = {
+        from: 'noreply <noreplyspades@gmail.com>',
+        to: emailTarget,
+        subject: 'Activation Key',
+        html: `<div><h1>Spades Forgot Password!</h1><p>Password: ${password}</p></div><div><p>If you didn't send the forgot password request then feel free to contact spadesIT1920@gmail.com.</p></div>`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}

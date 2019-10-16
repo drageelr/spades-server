@@ -94,3 +94,21 @@ exports.verify = async (req, res, next) => {
         res.json(e.errors);
     }
 }
+
+exports.forgotPassword = async (req, res, next) => {
+    let params = req.body;
+    try
+    {
+        let team = await Team.findOne({email: params.email}, 'password');
+        if(team)
+        {
+            transporter.sendPassword(params.email, team.password);
+        }
+        res.json({status: 200, message: 'Successful!'});
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

@@ -66,6 +66,14 @@ exports.search = async (req, res, next) =>
                 teamIDs[i].index = i;
             }
 
+            // Printing Sorted Stuff:
+            console.log('Pre-Printing:');
+            for(let i = 0; i < teamIDs.length; i++)
+            {
+                console.log('idArr[' + i + ']: ' + ' teamID: ' + teamIDs[i].teamID + ' index: ' + teamIDs[i].index);
+            }
+
+
             // Sort TeamIDs
             for(let i = 0; i < teamIDs.length; i++)
             {
@@ -87,6 +95,7 @@ exports.search = async (req, res, next) =>
             }
 
             // Printing Sorted Stuff:
+            console.log('Post-Printing:');
             for(let i = 0; i < teamIDs.length; i++)
             {
                 console.log('idArr[' + i + ']: ' + ' teamID: ' + teamIDs[i].teamID + ' index: ' + teamIDs[i].index);

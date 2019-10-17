@@ -77,7 +77,7 @@ exports.search = async (req, res, next) =>
             // Sort TeamIDs
             for(let i = 0; i < teamIDs.length; i++)
             {
-                for(let j = 0; j < i - 1; j++)
+                for(let j = 0; j < i; j++)
                 {
                     if(teamIDs[j].ID > teamIDs[j + 1].ID)
                     {

@@ -73,6 +73,9 @@ const memberSchema = new Schema({
     },
     photo: {
         type: String,
+    },
+    photoChangedBy: {
+        type: String
     }
 });
 

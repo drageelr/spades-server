@@ -59,6 +59,7 @@ exports.verifyAdmin = async (req, res, next) => {
         let adminReq = await Admin.findById(_id);
         if(adminReq)
         {
+            req.body.adminUsername = adminReq.username;
             next();
         }
         else

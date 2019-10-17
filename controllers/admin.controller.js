@@ -274,3 +274,33 @@ exports.changeTeamID = async(req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.changePhoto = async (req, res, next) =>
+{
+    let params = req.body;
+
+    if(params.photo && params.teamID && params.memberID)
+    {
+        let teamReq = await Team.findOne({teamID: params.teamID})
+        if(teamReq)
+        {
+            let saveMember = await Member.findOneAndUpdate({teamID: teamReq._id, memberID: params.memberID}, {photo: params.photo, photoChangedBy: params.adminUsername});
+            if(saveMember)
+            {
+                res.json({status: 200, message: 'Photo Updated Successfuly!'});
+            }
+            else
+            {
+                res.json({status: 404, message: 'Member not found!'});
+            }
+        }
+        else
+        {
+            res.json({status: 404, message: 'Team not found!'});
+        }
+    }
+    else
+    {
+        res.json({status: 400, message: 'Bad Request!'});
+    }
+}

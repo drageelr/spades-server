@@ -55,12 +55,47 @@ exports.search = async (req, res, next) =>
                 }
             }
             let teams = await Team.find({[params.search.via]: params.search.value, registered: true});
+            
+            // Store TeamIDs seperately
+            let teamIDs = [];
+            for(let i = 0; i < teams.length; i++)
+            {
+                teamIDs[i] = {};
+                teamIDs[i].teamID = teams[i].teamID;
+                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+            }
+
+            // Sort TeamIDs
+            for(let i = 0; i < teamIDs.length; i++)
+            {
+                for(let j = 0; j < i - 1; j++)
+                {
+                    if(teamIDs[j].ID > teamIDs[j + 1].ID)
+                    {
+                        let tempTID = teamIDs[j].teamID;
+                        let tempID = teamIDs[j].ID;
+                        teamIDs[j].teamID = teamIDs[j + 1].teamID;
+                        teamIDs[j].ID = teamIDs[j + 1].ID;
+                        teamIDs[j + 1].teamID = tempTID;
+                        teamIDs[j + 1].ID = tempID;
+                    }
+                }
+            }
+
+
             for(let i = 0; i < teams.length; i++)
             {
                 resObj.teams[i] = {};
                 for(let x of tprop)
                 {
-                    resObj.teams[i][x] = teams[i][x];
+                    if(x != 'teamID')
+                    {
+                        resObj.teams[i][x] = teams[i][x];
+                    }
+                    else
+                    {
+                        resObj.teams[i].teamID = teamIDs[i].teamID;
+                    }
                 }
             }
         }

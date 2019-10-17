@@ -86,6 +86,12 @@ exports.search = async (req, res, next) =>
                 }
             }
 
+            // Printing Sorted Stuff:
+            for(let i = 0; i < teamIDs.length; i++)
+            {
+                console.log('idArr[' + i + ']: ' + ' teamID: ' + teamIDs[i].teamID + ' index: ' + teamIDs[i].index);
+            }
+
 
             for(let i = 0; i < teams.length; i++)
             {

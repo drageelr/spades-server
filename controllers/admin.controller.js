@@ -63,6 +63,7 @@ exports.search = async (req, res, next) =>
                 teamIDs[i] = {};
                 teamIDs[i].teamID = teams[i].teamID;
                 teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                teamIDs[i].index = i;
             }
 
             // Sort TeamIDs
@@ -74,10 +75,13 @@ exports.search = async (req, res, next) =>
                     {
                         let tempTID = teamIDs[j].teamID;
                         let tempID = teamIDs[j].ID;
+                        let tempI = teamIDs[i].index;
                         teamIDs[j].teamID = teamIDs[j + 1].teamID;
                         teamIDs[j].ID = teamIDs[j + 1].ID;
+                        teamIDs[j].ID = teamIDs[j + 1].index;
                         teamIDs[j + 1].teamID = tempTID;
                         teamIDs[j + 1].ID = tempID;
+                        teamIDs[j + 1].index = tempI;
                     }
                 }
             }
@@ -90,7 +94,7 @@ exports.search = async (req, res, next) =>
                 {
                     if(x != 'teamID')
                     {
-                        resObj.teams[i][x] = teams[i][x];
+                        resObj.teams[i][x] = teams[teamIDs[i].index][x];
                     }
                     else
                     {

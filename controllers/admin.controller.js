@@ -86,7 +86,7 @@ exports.search = async (req, res, next) =>
                         let tempI = teamIDs[j].index;
                         teamIDs[j].teamID = teamIDs[j + 1].teamID;
                         teamIDs[j].ID = teamIDs[j + 1].ID;
-                        teamIDs[j].ID = teamIDs[j + 1].index;
+                        teamIDs[j].index = teamIDs[j + 1].index;
                         teamIDs[j + 1].teamID = tempTID;
                         teamIDs[j + 1].ID = tempID;
                         teamIDs[j + 1].index = tempI;

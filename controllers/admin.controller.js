@@ -313,22 +313,30 @@ exports.sendEvalForm = async (req, res, next) =>
     {
         if(password == req.query.pass)
         {
-            let teamReq = await Team.findOne({name: req.query.name}, 'email');
-            if(teamReq)
+            if(req.query.email)
             {
-                if(teamReq.registered)
+                transporter.sendEvalForm(req.query.email);
+                res.json({status: 200, message: 'Form Sent!'});
+            }
+            else if(req.query.name)
+            {
+                let teamReq = await Team.findOne({name: req.query.name}, 'email');
+                if(teamReq)
                 {
-                    transporter.sendEvalForm(teamReq.email);
-                    res.json({status: 200, message: 'Form Sent!'});
+                    if(teamReq.registered)
+                    {
+                        transporter.sendEvalForm(teamReq.email);
+                        res.json({status: 200, message: 'Form Sent!'});
+                    }
+                    else
+                    {
+                        res.json({status: 400, message: 'Team did not register!'});
+                    }
                 }
                 else
                 {
-                    res.json({status: 400, message: 'Team did not register!'});
+                    res.json({status: 400, message: 'No Such Team Exists!'});
                 }
-            }
-            else
-            {
-                res.json({status: 400, message: 'No Such Team Exists!'});
             }
         }
     }

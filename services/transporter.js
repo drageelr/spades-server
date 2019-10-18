@@ -57,7 +57,7 @@ exports.sendEvalForm = (emailTarget) =>
                 path: './files/EVALUATION_FORM.docx'
             }
         ],
-        html: `<div><h1>Spades Evaluation Form</h1><p>Kindly fill the evaluation form and send it to reg.psifi@gmail.com</p></div><div><p>If you didn't sign up on for Spades PSIFI event then feel free to contact spadesIT1920@gmail.com.</p></div>`
+        html: `<div><h1>Spades Evaluation Form</h1><p>Kindly fill the evaluation form and send it to reg.psifi@gmail.com. Your voucher generation process will start after you submit this form. Failure to submit the form will delay voucher generation which might make your team ineligible for 'Early Bid' discount.</p></div><div><p>If you didn't sign up on for Spades PSIFI event then feel free to contact spadesIT1920@gmail.com.</p></div>`
     };
 
     transporter.sendMail(mailOptions, function(error, info){

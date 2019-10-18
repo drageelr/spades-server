@@ -6,6 +6,8 @@ var Member = require('../models/member.model');
 var Event = require('../models/event.model');
 var Counter = require('../models/counter.model');
 
+var transporter = require('../services/transporter');
+
 async function getTeamNum()
 {
     try
@@ -130,7 +132,7 @@ exports.submit = async (req, res, next) =>
     try
     {
 
-        let teamReq = await Team.findById(params._id, 'registered');
+        let teamReq = await Team.findById(params._id, 'registered email');
         if(teamReq.registered)
         {
             res.json({status: 200, message: 'Form Already Submitted!'});
@@ -147,18 +149,18 @@ exports.submit = async (req, res, next) =>
 
         const idPrefixObj = {School: 'S', University: 'U', Privately_Uni: 'PU', Privately_Sch: 'PS'};
 
-        let temaIDString = 'PSI-';
+        let teamIDString = 'PSI-';
 
         for(let p in idPrefixObj)
         {
             if(params.inst.type == p)
             {
-                temaIDString += idPrefixObj[p] + '-';
+                teamIDString += idPrefixObj[p] + '-';
                 break;
             }
         }
 
-        temaIDString += await getTeamNum();
+        teamIDString += await getTeamNum();
 
         params.inst.teamID = params._id;
         let instObj = new Inst(params.inst);
@@ -183,7 +185,9 @@ exports.submit = async (req, res, next) =>
             }
         }
 
-        await Team.findByIdAndUpdate(params._id, {registered: true, headDelegateID: headDID, teamID: temaIDString});
+        await Team.findByIdAndUpdate(params._id, {registered: true, headDelegateID: headDID, teamID: teamIDString});
+
+        transporter.sendEvalForm(teamReq.email);
 
         res.json({status: 200, message: 'Succesful'});
 

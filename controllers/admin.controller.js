@@ -8,6 +8,8 @@ var Event = require('../models/event.model');
 
 var jwt = require('../services/jwt');
 
+var transporter = require('../services/transporter');
+
 const password = 'iamhammad';
 
 const tprop = ['_id','teamID', 'name', 'email', 'verified', 'paid'];
@@ -302,5 +304,37 @@ exports.changePhoto = async (req, res, next) =>
     else
     {
         res.json({status: 400, message: 'Bad Request!'});
+    }
+}
+
+exports.sendEvalForm = async (req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let teamReq = await Team.findOne({name: req.query.name}, 'email');
+            if(teamReq)
+            {
+                if(teamReq.registered)
+                {
+                    transporter.sendEvalForm(teamReq.email);
+                    res.json({status: 200, message: 'Form Sent!'});
+                }
+                else
+                {
+                    res.json({status: 400, message: 'Team did not register!'});
+                }
+            }
+            else
+            {
+                res.json({status: 400, message: 'No Such Team Exists!'});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
     }
 }

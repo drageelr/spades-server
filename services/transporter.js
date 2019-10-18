@@ -45,3 +45,26 @@ exports.sendPassword = (emailTarget, password) => {
         }
     });
 }
+
+exports.sendEvalForm = (emailTarget) =>
+{
+    var mailOptions = {
+        from: 'noreply <noreplyspades@gmail.com>',
+        to: emailTarget,
+        subject: 'Evaluation Form',
+        attachments: [
+            {
+                path: './files/EVALUATION_FORM.docx'
+            }
+        ],
+        html: `<div><h1>Spades Evaluation Form</h1><p>Kindly fill the evaluation form and send it to reg.psifi@gmail.com</p></div><div><p>If you didn't sign up on for Spades PSIFI event then feel free to contact spadesIT1920@gmail.com.</p></div>`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}

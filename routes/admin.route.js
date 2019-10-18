@@ -22,6 +22,8 @@ router.get('/activate', adminController.activateTeam);
 
 router.get('/cteamID', adminController.changeTeamID);
 
+router.get('/evalform', adminController.sendEvalForm);
+
 router.use('/', express.static('admin'));
 
 

@@ -160,8 +160,6 @@ exports.submit = async (req, res, next) =>
             }
         }
 
-        teamIDString += await getTeamNum();
-
         params.inst.teamID = params._id;
         let instObj = new Inst(params.inst);
         await instObj.save()
@@ -184,6 +182,8 @@ exports.submit = async (req, res, next) =>
                 headDID = saved._id;
             }
         }
+
+        teamIDString += await getTeamNum();
 
         await Team.findByIdAndUpdate(params._id, {registered: true, headDelegateID: headDID, teamID: teamIDString});
 

@@ -24,6 +24,10 @@ router.get('/cteamID', adminController.changeTeamID);
 
 router.get('/evalform', adminController.sendEvalForm);
 
+//router.get('/member/:inst/:tID/:mID');
+
+//router.get('/team/:inst/:tID');
+
 router.use('/', express.static('admin'));
 
 

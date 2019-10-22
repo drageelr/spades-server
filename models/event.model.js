@@ -28,7 +28,7 @@ const eventSchema = new Schema({
     explain: {
         type: String,
         required: true,
-        maxlength: 150
+        maxlength: 1000
     },
     ambassadorName: {
         type: String,

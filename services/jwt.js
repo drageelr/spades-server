@@ -6,7 +6,7 @@ var Team = require('../models/team.model');
 var Admin = require('../models/admin.model');
 
 exports.sign = (payload) => {
-    return jwt.sign({_id: payload}, config.secretKey, {expiresIn: '1h'});
+    return jwt.sign({_id: payload}, config.secretKey, {expiresIn: '12h'});
 }
 
 let verification = (token) =>

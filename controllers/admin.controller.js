@@ -346,3 +346,41 @@ exports.sendEvalForm = async (req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.fixInvalidTeams = async (req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let resObj = {status: 200, message: 'Team(s) Fixed!', teamEmails: []};
+            let teams = await Team.find({registered: false});
+            let counter = 0;
+            for(let i = 0; i < teams.length; i++)
+            {
+                await Inst.findOneAndDelete({teamID: teams[i]._id});
+                await Event.findOneAndDelete({teamID: teams[i]._id});
+                let member = await Member.findOneAndDelete({teamID: teams[i]._id});
+                while(member)
+                {
+                    member = await Member.findOneAndDelete({teamID: teams[i]._id});
+                }
+                teamEmails[counter] = teams[i].email;
+                counter++;
+            }
+            if(counter == 0)
+            {
+                res.json({status: 400, message: 'No teams need to be fixed!'});
+            }
+            else
+            {
+                res.json(resObj);
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

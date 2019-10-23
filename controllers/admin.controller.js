@@ -358,15 +358,23 @@ exports.fixInvalidTeams = async (req, res, next) =>
             let counter = 0;
             for(let i = 0; i < teams.length; i++)
             {
-                await Inst.findOneAndDelete({teamID: teams[i]._id});
-                await Event.findOneAndDelete({teamID: teams[i]._id});
+                let inst = await Inst.findOneAndDelete({teamID: teams[i]._id});
+                let event = await Event.findOneAndDelete({teamID: teams[i]._id});
                 let member = await Member.findOneAndDelete({teamID: teams[i]._id});
+                let fixrequired = false;
+                if(inst || event || member)
+                {
+                    fixrequired = true;
+                }
                 while(member)
                 {
                     member = await Member.findOneAndDelete({teamID: teams[i]._id});
                 }
-                resObj.teamEmails[counter] = teams[i].email;
-                counter++;
+                if(fixrequired)
+                {
+                    resObj.teamEmails[counter] = teams[i].email;
+                    counter++;
+                }
             }
             if(counter == 0)
             {

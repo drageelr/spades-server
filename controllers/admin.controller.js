@@ -365,7 +365,7 @@ exports.fixInvalidTeams = async (req, res, next) =>
                 {
                     member = await Member.findOneAndDelete({teamID: teams[i]._id});
                 }
-                teamEmails[counter] = teams[i].email;
+                resObj.teamEmails[counter] = teams[i].email;
                 counter++;
             }
             if(counter == 0)

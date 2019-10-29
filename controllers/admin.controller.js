@@ -7,7 +7,7 @@ var Admin = require('../models/admin.model');
 var Event = require('../models/event.model');
 var jwt = require('../services/jwt');
 var transporter = require('../services/transporter');
-const { AsyncParser } = require('json2csv');
+const { parseAsync } = require('json2csv');
 const fs = require('fs');
 
 const password = 'iamhammad';
@@ -414,7 +414,7 @@ exports.getHeadEmails = async (req, res, next) =>
 
             const path = './temp/HeadDelegates.csv'
 
-            parseAsync(myData, opts)
+            parseAsync(csvObj, csvFieldsObj)
             .then(csv => {
                 fs.writeFile(path, csv, (er, data) => {
                     if(er)

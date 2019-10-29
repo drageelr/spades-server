@@ -411,6 +411,8 @@ exports.getHeadEmails = async (req, res, next) =>
                 csvObj[i]['name'] = membersHead[i].name;
                 csvObj[i]['email'] = membersHead[i].email;
                 csvObj[i]['phone'] = membersHead[i].phone;
+                console.log('1) ' + csvObj[i]['#'] + ' ' + csvObj[i]['name'] + ' ' + csvObj[i]['email'] + ' ' + csvObj[i]['phone'] + ' ' );
+                console.log('1. ' + i + ' ' + membersHead[i]['name'] + ' ' + membersHead[i]['email'] + ' ' + membersHead[i]['phone'] + ' ' );
             }
 
             console.log(csvObj);

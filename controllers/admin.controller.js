@@ -399,18 +399,18 @@ exports.getHeadEmails = async (req, res, next) =>
     {
         if(password == req.query.pass)
         {
-            let csvFields = ['#', 'name', 'email', 'phone'];
+            let csvFields = ['#', 'firstName', 'lastName', 'email', 'phone'];
             let csvFieldsObj = {csvFields};
             let csvObj = [];
             let teams = await Team.find({registered: true}, 'headDelegateID');
             for(let i = 0; i < teams.length; i++)
             {
-                let membersHead = await Member.findById({_id: teams[i].headDelegateID}, 'name email phone');
+                let membersHead = await Member.findById({_id: teams[i].headDelegateID}, 'firstName lastName email phone');
                 csvObj[i] = {};
-                csvObj[i]['#'] = i;
-                csvObj[i]['name'] = membersHead.name;
-                csvObj[i]['email'] = membersHead.email;
-                csvObj[i]['phone'] = membersHead.phone;
+                for(let q = 0; q < csvFields.length; q++)
+                {
+                    csvObj[i][csvFields[q]] = membersHead[csvFields[q]];
+                }
             }
 
             console.log(csvObj);

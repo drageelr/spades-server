@@ -408,10 +408,12 @@ exports.getHeadEmails = async (req, res, next) =>
             {
                 csvObj[i] = {};
                 csvObj[i]['#'] = i;
-                csvObj[i].name = membersHead[i].name;
-                csvObj[i].email = membersHead[i].email;
-                csvObj[i].phone = membersHead[i].phone;
+                csvObj[i]['name'] = membersHead[i].name;
+                csvObj[i]['email'] = membersHead[i].email;
+                csvObj[i]['phone'] = membersHead[i].phone;
             }
+
+            console.log(csvObj);
 
             const path = './temp/HeadDelegates.csv'
 

@@ -401,7 +401,7 @@ exports.getHeadEmails = async (req, res, next) =>
         {
             let csvFields = ['#', 'name', 'email', 'phone'];
             let csvFieldsObj = {csvFields};
-            let csvObj = {'#': [], name: [], email: [], phone: []};
+            let csvObj = {'#': {}, name: {}, email: {}, phone: {}};
             let teams = await Team.find({registered: true}, 'headDelegateID');
             let membersHead = await Member.find({_id: teams.headDelegateID}, 'name email phone');
             for(let i = 0; i < membersHead.length; i++)

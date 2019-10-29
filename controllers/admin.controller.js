@@ -5,10 +5,10 @@ var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Admin = require('../models/admin.model');
 var Event = require('../models/event.model');
-
 var jwt = require('../services/jwt');
-
 var transporter = require('../services/transporter');
+const { AsyncParser } = require('json2csv');
+const fs = require('fs');
 
 const password = 'iamhammad';
 
@@ -384,6 +384,51 @@ exports.fixInvalidTeams = async (req, res, next) =>
             {
                 res.json(resObj);
             }
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.getHeadEmails = async (req, res, next) =>
+{
+    try
+    {
+        if(password == req.query.pass)
+        {
+            let csvFields = ['#', 'name', 'email', 'phone'];
+            let csvFieldsObj = {csvFields};
+            let csvObj = {'#': [], name: [], email: [], phone: []};
+            let teams = await Team.find({registered: true}, 'headDelegateID');
+            let membersHead = await Member.find({_id: teams.headDelegateID}, 'name email phone');
+            for(let i = 0; i < membersHead.length; i++)
+            {
+                csvObj['#'][i] = i;
+                csvObj.name[i] = membersHead[i].name;
+                csvObj.email[i] = membersHead[i].email;
+                csvObj.phone[i] = membersHead[i].phone;
+            }
+
+            const path = './temp/HeadDelegates.csv'
+
+            parseAsync(myData, opts)
+            .then(csv => {
+                fs.writeFile(path, csv, (er, data) => {
+                    if(er)
+                    {
+                        res.json({status: 999, message: 'Failure to Create File!'});
+                    }
+                    else
+                    {
+                        res.download(path);
+                    }
+                });
+            })
+            .catch(err => console.error(err));
+            
         }
     }
     catch(e)

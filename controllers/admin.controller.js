@@ -401,15 +401,16 @@ exports.getHeadEmails = async (req, res, next) =>
         {
             let csvFields = ['#', 'name', 'email', 'phone'];
             let csvFieldsObj = {csvFields};
-            let csvObj = {'#': {}, name: {}, email: {}, phone: {}};
+            let csvObj = [];
             let teams = await Team.find({registered: true}, 'headDelegateID');
             let membersHead = await Member.find({_id: teams.headDelegateID}, 'name email phone');
             for(let i = 0; i < membersHead.length; i++)
             {
-                csvObj['#'][i] = i;
-                csvObj.name[i] = membersHead[i].name;
-                csvObj.email[i] = membersHead[i].email;
-                csvObj.phone[i] = membersHead[i].phone;
+                csvObj[i] = {};
+                csvObj[i]['#'] = i;
+                csvObj[i].name = membersHead[i].name;
+                csvObj[i].email = membersHead[i].email;
+                csvObj[i].phone = membersHead[i].phone;
             }
 
             const path = './temp/HeadDelegates.csv'

@@ -409,7 +409,11 @@ exports.getHeadEmails = async (req, res, next) =>
                 csvObj[i] = {};
                 for(let q = 0; q < csvFields.length; q++)
                 {
-                    if(q != 1)
+                    if(q == 0)
+                    {
+                        csvObj[i][csvFields[q]] = i;
+                    }
+                    else if(q != 1)
                     {
                         csvObj[i][csvFields[q]] = membersHead[csvFields[q]];
                     }

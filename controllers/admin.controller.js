@@ -407,7 +407,7 @@ exports.getHeadEmails = async (req, res, next) =>
             {
                 let membersHead = await Member.findById({_id: teams[i].headDelegateID}, 'firstName lastName email phone');
                 csvObj[i] = {};
-                for(let q = 0; q < csvFields.length - 1; q++)
+                for(let q = 0; q < csvFields.length; q++)
                 {
                     if(q != 1)
                     {

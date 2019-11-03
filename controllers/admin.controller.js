@@ -458,7 +458,7 @@ exports.getAllInfo = async (req, res, next) =>
     {
         if(req.query.pass == password)
         {
-            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email', 'Delegate_2', 'Email', 'Delegate_3', 'Email', 'Delegate_4', 'Email'];
+            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Delegate_2', 'Email_2', 'Delegate_3', 'Email_3', 'Delegate_4', 'Email_4'];
             let csvObjArr = [];
             let teamFields = ['teamID', 'name'];
             let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone'];
@@ -478,25 +478,32 @@ exports.getAllInfo = async (req, res, next) =>
                 let inst = await Inst.findOne({teamID: teams[i]._id}, 'name');
                 csvObjArr[i].Institution_Name = inst.name;    
                 
+                let headMember = await Member.findById(teams[i].headDelegateID, 'name email phone');
+                const hm = -4;
+                for(let j = 4; j < 7; j++)
+                {
+                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + e]]
+                }
+
                 let event = await Event.findOne({teamID: teams[i]._id});
                 const e = -7;
                 for(let j = 7; j < 12; j++)
                 {
                     if(event[eventFields[j + e]] != undefined)
                     {
-                        csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
+                        if(event[eventFields[j + e]] == "No")
+                        {
+                            csvObjArr[i][csvFields[j]] = "";
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
+                        }
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "N/A";
+                        csvObjArr[i][csvFields[j]] = "";
                     }
-                }
-                
-                let headMember = await Member.findById(teams[i].headDelegateID, 'name email phone');
-                const hm = -4;
-                for(let j = 4; j < 7; j++)
-                {
-                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + e]]
                 }
 
                 let members = await Member.find({teamID: teams[i]._id, _id: {$ne: teams[i].headDelegateID}}, 'name email phone');
@@ -517,7 +524,7 @@ exports.getAllInfo = async (req, res, next) =>
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = 'N/A';
+                        csvObjArr[i][csvFields[j]] = "";
                         if(j % 2 != 0)
                         {
                             m++;

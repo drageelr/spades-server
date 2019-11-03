@@ -500,24 +500,28 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 let members = await Member.find({teamID: teams[i]._id, _id: {$ne: teams[i].headDelegateID}}, 'name email phone');
-                const m = -12;
+                let m = 0;
                 for(let j = 12; j < 20; j++)
                 {
-                    let mIndex = j + m;
-                    if(members.length < mIndex)
+                    if(m < members.length)
                     {
                         if(j % 2 != 0)
                         {
-                            csvObjArr[i][csvFields[j]] = members[mIndex - 1].email;
+                            csvObjArr[i][csvFields[j]] = members[m].email;
+                            mCurrentLen++;
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = members[mIndex].name;   
+                            csvObjArr[i][csvFields[j]] = members[m].name;   
                         }
                     }
                     else
                     {
                         csvObjArr[i][csvFields[j]] = 'N/A';
+                        if(j % 2 != 0)
+                        {
+                            mCurrentLen++;
+                        }
                     }
                 }
             }

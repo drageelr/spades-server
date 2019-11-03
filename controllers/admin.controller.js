@@ -467,7 +467,7 @@ exports.getAllInfo = async (req, res, next) =>
             for(let i = 0; i < teams.length; i++)
             {
                 csvObjArr[i] = {};
-                csvObjArr[i]['#'] = i;
+                csvObjArr[i]['#'] = i + 1;
 
                 const t = -1;
                 for(let j = 1; j < 3; j++)
@@ -478,11 +478,19 @@ exports.getAllInfo = async (req, res, next) =>
                 let inst = await Inst.findOne({teamID: teams[i]._id}, 'name');
                 csvObjArr[i].Institution_Name = inst.name;    
                 
-                let headMember = await Member.findById(teams[i].headDelegateID, 'name email phone');
+                let headMember = await Member.findById(teams[i].headDelegateID, 'firstName lastName email phone');
                 const hm = -4;
                 for(let j = 4; j < 7; j++)
                 {
-                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]]
+                    if(memberFields[j + hm] == "name")
+                    {
+                        csvObjArr[i][csvFields[j]] = headMember.firstName + ' ' + headMember.lastName;
+                    }
+                    else
+                    {
+                        csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
+                    }
+                    
                 }
 
                 let event = await Event.findOne({teamID: teams[i]._id});
@@ -506,7 +514,7 @@ exports.getAllInfo = async (req, res, next) =>
                     }
                 }
 
-                let members = await Member.find({teamID: teams[i]._id, _id: {$ne: teams[i].headDelegateID}}, 'name email phone');
+                let members = await Member.find({teamID: teams[i]._id, _id: {$ne: teams[i].headDelegateID}}, 'firstName lastName email phone');
                 let m = 0;
                 for(let j = 12; j < 20; j++)
                 {
@@ -519,7 +527,7 @@ exports.getAllInfo = async (req, res, next) =>
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = members[m].name;   
+                            csvObjArr[i][csvFields[j]] = members[m].firstName + ' ' + members[m].lastName;  
                         }
                     }
                     else

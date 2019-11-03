@@ -451,3 +451,100 @@ exports.getHeadEmails = async (req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.getAllInfo = async (req, res, next) =>
+{
+    try
+    {
+        if(req.query.pass == password)
+        {
+            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email', 'Delegate_2', 'Email', 'Delegate_3', 'Email', 'Delegate_4', 'Email'];
+            let csvObjArr = [];
+            let teamFields = ['teamID', 'name'];
+            let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone'];
+            let memberFields = ['name', 'email', 'phone'];
+            let teams = await Team.find({registered: true}, '_id teamID name headDelegateID');
+            for(let i = 0; i < teams.length; i++)
+            {
+                csvObjArr[i] = {};
+                csvObjArr[i]['#'] = i;
+
+                const t = -1;
+                for(let j = 1; j < 3; j++)
+                {
+                    csvObjArr[i][csvFields[j]] = teams[i][teamFields[j + t]];
+                }
+
+                let inst = await Inst.findOne({teamID: teams[i]._id}, 'name');
+                csvObjArr[i].Institution_Name = inst.name;    
+                
+                let event = await Event.findOne({teamID: teams[i]._id});
+                const e = -7;
+                for(let j = 7; j < 12; j++)
+                {
+                    if(event[eventFields[j + e]] != undefined)
+                    {
+                        csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
+                    }
+                    else
+                    {
+                        csvObjArr[i][csvFields[j]] = "N/A";
+                    }
+                }
+                
+                let headMember = await Member.findById(teams[i].headDelegateID, 'name email phone');
+                const hm = -4;
+                for(let j = 4; j < 7; j++)
+                {
+                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + e]]
+                }
+
+                let members = await Member.find({teamID: teams[i]._id, _id: {$ne: teams[i].headDelegateID}}, 'name email phone');
+                const m = -12;
+                for(let j = 12; j < 20; j++)
+                {
+                    let mIndex = j + m;
+                    if(members.length < mIndex)
+                    {
+                        if(j % 2 != 0)
+                        {
+                            csvObjArr[i][csvFields[j]] = members[mIndex - 1].email;
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[j]] = members[mIndex].name;   
+                        }
+                    }
+                    else
+                    {
+                        csvObjArr[i][csvFields[j]] = 'N/A';
+                    }
+                }
+            }
+
+
+            const path = './temp/AllInfo.csv'
+
+            parseAsync(csvObjArr, {csvFields})
+            .then(csv => {
+                fs.writeFile(path, csv, (er, data) => {
+                    if(er)
+                    {
+                        res.json({status: 999, message: 'Failure to Create File!'});
+                    }
+                    else
+                    {
+                        res.download(path);
+                    }
+                });
+            })
+            .catch(err => console.error(err));
+
+        }
+    }
+    catch(e)
+    {
+        console.log(e)
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

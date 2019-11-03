@@ -482,7 +482,7 @@ exports.getAllInfo = async (req, res, next) =>
                 const hm = -4;
                 for(let j = 4; j < 7; j++)
                 {
-                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + e]]
+                    csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]]
                 }
 
                 let event = await Event.findOne({teamID: teams[i]._id});

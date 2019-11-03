@@ -508,7 +508,7 @@ exports.getAllInfo = async (req, res, next) =>
                         if(j % 2 != 0)
                         {
                             csvObjArr[i][csvFields[j]] = members[m].email;
-                            mCurrentLen++;
+                            m++;
                         }
                         else
                         {
@@ -520,7 +520,7 @@ exports.getAllInfo = async (req, res, next) =>
                         csvObjArr[i][csvFields[j]] = 'N/A';
                         if(j % 2 != 0)
                         {
-                            mCurrentLen++;
+                            m++;
                         }
                     }
                 }

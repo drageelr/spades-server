@@ -64,7 +64,7 @@ exports.search = async (req, res, next) =>
             {
                 teamIDs[i] = {};
                 teamIDs[i].teamID = teams[i].teamID;
-                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                teamIDs[i].ID = parseInt(teams[i].teamID.substr(teams[i].teamID.length - 5, 5));
                 teamIDs[i].index = i;
             }
 

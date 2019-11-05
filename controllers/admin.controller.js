@@ -63,8 +63,8 @@ exports.search = async (req, res, next) =>
             for(let i = 0; i < teams.length; i++)
             {
                 teamIDs[i] = {};
-                teamIDs[i].teamID = teamIDs[i].index.teamID;
-                teamIDs[i].ID = teamIDs[i].index.teamID.substr(teamIDs[i].index.teamID.length - 5, 5);
+                teamIDs[i].teamID = teams[teamIDs[i].index].teamID;
+                teamIDs[i].ID = teams[teamIDs[i].index].teamID.substr(teams[teamIDs[i].index].teamID.length - 5, 5);
                 teamIDs[i].index = i;
             }
 
@@ -106,16 +106,16 @@ exports.search = async (req, res, next) =>
 
             for(let i = 0; i < teams.length; i++)
             {
-                resObj.teamIDs[i].index = {};
+                resObj.teams[teamIDs[i].index] = {};
                 for(let x of tprop)
                 {
                     if(x != 'teamID')
                     {
-                        resObj.teamIDs[i].index[x] = teams[teamIDs[i].index][x];
+                        resObj.teams[teamIDs[i].index][x] = teams[teamIDs[i].index][x];
                     }
                     else
                     {
-                        resObj.teamIDs[i].index.teamID = teamIDs[i].teamID;
+                        resObj.teams[teamIDs[i].index].teamID = teamIDs[i].teamID;
                     }
                 }
             }
@@ -495,6 +495,7 @@ exports.getAllInfo = async (req, res, next) =>
                 }
             }
 
+
             for(let i = 0; i < teams.length; i++)
             {
                 csvObjArr[i] = {};
@@ -503,13 +504,13 @@ exports.getAllInfo = async (req, res, next) =>
                 const t = -1;
                 for(let j = 1; j < 3; j++)
                 {
-                    csvObjArr[i][csvFields[j]] = teamIDs[i].index[teamFields[j + t]];
+                    csvObjArr[i][csvFields[j]] = teams[teamIDs[i].index][teamFields[j + t]];
                 }
 
-                let inst = await Inst.findOne({teamID: teamIDs[i].index._id}, 'name');
+                let inst = await Inst.findOne({teamID: teams[teamIDs[i].index]._id}, 'name');
                 csvObjArr[i].Institution_Name = inst.name;    
                 
-                let headMember = await Member.findById(teamIDs[i].index.headDelegateID, 'firstName lastName email phone accomodation');
+                let headMember = await Member.findById(teams[teamIDs[i].index].headDelegateID, 'firstName lastName email phone');
                 const hm = -4;
                 for(let j = 4; j < 8; j++)
                 {
@@ -524,7 +525,7 @@ exports.getAllInfo = async (req, res, next) =>
                     
                 }
 
-                let event = await Event.findOne({teamID: teamIDs[i].index._id});
+                let event = await Event.findOne({teamID: teams[teamIDs[i].index]._id});
                 const e = -8;
                 for(let j = 8; j < 13; j++)
                 {
@@ -545,9 +546,9 @@ exports.getAllInfo = async (req, res, next) =>
                     }
                 }
 
-                let members = await Member.find({teamID: teamIDs[i].index._id, _id: {$ne: teamIDs[i].index.headDelegateID}}, 'firstName lastName email phone accomodation');
+                let members = await Member.find({teamID: teams[teamIDs[i].index]._id, _id: {$ne: teams[teamIDs[i].index].headDelegateID}}, 'firstName lastName email phone');
                 let m = 0;
-                for(let j = 13; j < 25; j++)
+                for(let j = 13; j < 24; j++)
                 {
                     if(m < members.length)
                     {

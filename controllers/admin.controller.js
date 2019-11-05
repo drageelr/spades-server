@@ -63,8 +63,8 @@ exports.search = async (req, res, next) =>
             for(let i = 0; i < teams.length; i++)
             {
                 teamIDs[i] = {};
-                teamIDs[i].teamID = teams[teamIDs[i].index].teamID;
-                teamIDs[i].ID = teams[teamIDs[i].index].teamID.substr(teams[teamIDs[i].index].teamID.length - 5, 5);
+                teamIDs[i].teamID = teams[i].teamID;
+                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
                 teamIDs[i].index = i;
             }
 
@@ -507,8 +507,9 @@ exports.getAllInfo = async (req, res, next) =>
                     csvObjArr[i][csvFields[j]] = teams[teamIDs[i].index][teamFields[j + t]];
                 }
 
-                let inst = await Inst.findOne({teamID: teams[teamIDs[i].index]._id}, 'name');
-                csvObjArr[i].Institution_Name = inst.name;    
+                let inst = await Inst.findOne({teamID: teams[teamIDs[i].index]._id}, 'name createdAt');
+                csvObjArr[i].Institution_Name = inst.name;
+                const earlyDT = new Date('')
                 
                 let headMember = await Member.findById(teams[teamIDs[i].index].headDelegateID, 'firstName lastName email phone accomodation');
                 const hm = -4;

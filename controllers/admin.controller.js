@@ -559,8 +559,7 @@ exports.getAllInfo = async (req, res, next) =>
                         }
                         else if(j % 3 == 2)
                         {
-                            csvObjArr[i][csvFields[j]] = members[m].email;
-                            m++;   
+                            csvObjArr[i][csvFields[j]] = members[m].email;   
                         }
                         else
                         {

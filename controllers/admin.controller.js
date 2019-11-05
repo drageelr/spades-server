@@ -520,7 +520,22 @@ exports.getAllInfo = async (req, res, next) =>
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
+                        if(memberFields[j + hm] == 'accomodation')
+                        {
+                            if(headMember[memberFields[j + hm]])
+                            {
+                                csvObjArr[i][csvFields[j]] = "Yes";
+                            }
+                            else
+                            {
+                                csvObjArr[i][csvFields[j]] = "";
+                            }
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
+                        }
+                        
                     }
                     
                 }
@@ -563,7 +578,14 @@ exports.getAllInfo = async (req, res, next) =>
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = members[m].accomodation;
+                            if(members[m].accomodation == false)
+                            {
+                                csvObjArr[i][csvFields[j]] = "";    
+                            }
+                            else
+                            {
+                                csvObjArr[i][csvFields[j]] = "Yes";
+                            }
                             m++;
                         }
                     }

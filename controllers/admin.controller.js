@@ -547,7 +547,7 @@ exports.getAllInfo = async (req, res, next) =>
 
                 let members = await Member.find({teamID: teamIDs[i].index._id, _id: {$ne: teamIDs[i].index.headDelegateID}}, 'firstName lastName email phone accomodation');
                 let m = 0;
-                for(let j = 13; j < 24; j++)
+                for(let j = 13; j < 25; j++)
                 {
                     if(m < members.length)
                     {

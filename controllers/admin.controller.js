@@ -627,3 +627,27 @@ exports.getAllInfo = async (req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.teamQR = async (req, res, next) =>
+{
+    try
+    {
+        let params = req.body;
+        let teamIDString = 'PSI-' + params.type.toUpperCase() + '-' + params.tID;
+        let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
+        if(teamReq)
+        {
+            let token = jwt.sign(teamReq._id);
+            res.redirect('/admin/data?token=' + token);
+        }
+        else
+        {
+            res.json({status: 400, message: 'Bad Request!'});
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: "Internal Server Error!"});
+    }
+}

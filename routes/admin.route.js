@@ -32,7 +32,7 @@ router.get('/getAllInfo', adminController.getAllInfo);
 
 //router.get('/member/:inst/:tID/:mID');
 
-//router.get('/team/:inst/:tID');
+router.get('/team/:type/:tID', adminController.teamQR);
 
 router.use('/', express.static('admin'));
 

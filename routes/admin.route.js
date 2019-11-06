@@ -12,6 +12,8 @@ router.post('/search', jwt.verifyAdmin, adminController.search);
 
 router.post('/data', jwt.verifyAdmin, portalController.viewData);
 
+router.get('/dataQR', jwt.verify, portalController.viewData);
+
 router.post('/changephoto', jwt.verifyAdmin, adminController.changePhoto);
 
 router.get('/admin.html', jwt.verifyAdmin);

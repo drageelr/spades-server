@@ -638,7 +638,7 @@ exports.teamQR = async (req, res, next) =>
         if(teamReq)
         {
             let token = jwt.sign(teamReq._id);
-            res.redirect('/admin/data?token=' + token);
+            res.redirect('/admin/dataQR?token=' + token);
         }
         else
         {

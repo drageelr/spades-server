@@ -632,7 +632,7 @@ exports.teamQR = async (req, res, next) =>
 {
     try
     {
-        let params = req.body;
+        let params = req.params;
         let teamIDString = 'PSI-' + params.type + '-' + params.tID;
         let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
         if(teamReq)

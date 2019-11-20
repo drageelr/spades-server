@@ -44,3 +44,7 @@ Spades Server
 
 ## API version 12:
 1. Get All Info Added
+
+## API version 13:
+1. Added text in form submission email
+2. Send Portal Error Info added

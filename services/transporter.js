@@ -57,7 +57,7 @@ exports.sendEvalForm = (emailTarget) =>
                 path: './files/EVALUATION_FORM.docx'
             }
         ],
-        html: `<div><h1>Spades Evaluation Form</h1><p>Kindly fill the evaluation form and send it to reg.psifi@gmail.com. Your voucher generation process will start after you submit this form. Failure to submit the form will delay voucher generation which might make your team ineligible for 'Early Bid' discount.</p></div><div><p>If you didn't sign up on for Spades PSIFI event then feel free to contact spadesIT1920@gmail.com.</p></div>`
+        html: `<div><h1>Spades Evaluation Form</h1><p>Kindly fill the evaluation form and send it to reg.psifi@gmail.com. Your voucher generation process will start after you submit this form. Failure to submit the form will delay voucher generation which might make your team ineligible for 'Early Bid' discount.</p></div><div><p>Note: Submiting portal form and the evaluation form doesn't ensure your selection. You will get an email if you get selected which would contain further information on generating the payment voucher.</p></div><div><p>If you didn't sign up on for Spades PSIFI event then feel free to contact spadesIT1920@gmail.com.</p></div>`
     };
 
     transporter.sendMail(mailOptions, function(error, info){
@@ -65,6 +65,24 @@ exports.sendEvalForm = (emailTarget) =>
             console.log(error);
         } else {
             console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
+exports.sendFormError = (emailTeam, nameTeam, errorMsg) =>
+{
+    var mailOptions = {
+        from: 'noreply <noreplyspades@gmail.com>',
+        to: 'reg.psifi@gmail.com, spadesIT1920@gmail.com',
+        subject: 'Portal Error',
+        html: `<div><h1>Spades Portal Form Error</h1><p>Team registered with the <b>Email: ${emailTeam}, Team Name: ${nameTeam}</b>.</p></div><div><p>The error is: ${errorMsg}</p></div>`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Error Email sent: ' + info.response);
         }
     });
 }

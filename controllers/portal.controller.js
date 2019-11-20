@@ -8,6 +8,8 @@ var Counter = require('../models/counter.model');
 
 var transporter = require('../services/transporter');
 
+const http = require('http');
+
 async function getTeamNum()
 {
     try
@@ -195,7 +197,14 @@ exports.submit = async (req, res, next) =>
     catch(e)
     {
         console.log(e);
-        res.json({status: 500, message: 'Internal Server Error!'});
+        http.get('http://spades.lums.edu.pk/admin/fixTeams?pass=iamhammad');
+        let teamReq = await Team.findById(req.body._id);
+        if(teamReq)
+        {
+            transporter.sendFormError(teamReq.email, teamReq.name, e.errors.message);
+        }
+        let resMsg = 'Internal Server Error! Error: ' + e.errors.message;
+        res.json({status: 500, message: resMsg});
     }
 
     

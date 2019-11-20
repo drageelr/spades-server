@@ -198,12 +198,30 @@ exports.submit = async (req, res, next) =>
     {
         console.log(e);
         http.get('http://spades.lums.edu.pk/admin/fixTeams?pass=iamhammad');
+        
+        // Get exact Error
+        let resMsg = 'Internal Server Error! Error: ';
+        if(e.code == 11000)
+        {
+            resMsg += 'Duplication Error. Contact Spades IT Team: +923111788936';
+        }
+        else
+        {
+            for(let prop in e.errors)
+            {
+                if(prop != '__proto__')
+                {
+                    resMsg += 'Missing ' + prop;
+                    break;
+                }
+            }
+        }
+
         let teamReq = await Team.findById(req.body._id);
         if(teamReq)
         {
-            transporter.sendFormError(teamReq.email, teamReq.name, e.errors.message);
+            transporter.sendFormError(teamReq.email, teamReq.name, resMsg);
         }
-        let resMsg = 'Internal Server Error! Error: ' + e.errors.message;
         res.json({status: 500, message: resMsg});
     }
 

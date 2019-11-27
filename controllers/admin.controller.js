@@ -508,7 +508,14 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 let inst = await Inst.findOne({teamID: teams[teamIDs[i].index]._id}, 'name createdAt');
-                csvObjArr[i].Institution_Name = inst.name;
+                if(inst != undefined)
+                {
+                    csvObjArr[i].Institution_Name = inst.name;
+                }
+                else
+                {
+                    csvObjArr[i].Institution_Name = "";
+                }
                 const earlyDT = new Date('')
                 
                 let headMember = await Member.findById(teams[teamIDs[i].index].headDelegateID, 'firstName lastName email phone accomodation');

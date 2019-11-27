@@ -515,6 +515,7 @@ exports.getAllInfo = async (req, res, next) =>
                 else
                 {
                     csvObjArr[i].Institution_Name = "";
+                    console.log('Corrupt TeamID: ' + teams[i].name);
                 }
                 const earlyDT = new Date('')
                 

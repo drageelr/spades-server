@@ -514,7 +514,7 @@ exports.getAllInfo = async (req, res, next) =>
                 }
                 else
                 {
-                    csvObjArr[i].Institution_Name = "";
+                    csvObjArr[i].Institution_Name = "<ERROR>";
                     console.log('Corrupt TeamID: ' + teams[i].name);
                 }
                 const earlyDT = new Date('')
@@ -523,50 +523,63 @@ exports.getAllInfo = async (req, res, next) =>
                 const hm = -4;
                 for(let j = 4; j < 8; j++)
                 {
-                    if(memberFields[j + hm] == "name")
+                    if(headMember != undefined)
                     {
-                        csvObjArr[i][csvFields[j]] = headMember.firstName + ' ' + headMember.lastName;
-                    }
-                    else
-                    {
-                        if(memberFields[j + hm] == 'accomodation')
+                        if(memberFields[j + hm] == "name")
                         {
-                            if(headMember[memberFields[j + hm]])
-                            {
-                                csvObjArr[i][csvFields[j]] = "Yes";
-                            }
-                            else
-                            {
-                                csvObjArr[i][csvFields[j]] = "";
-                            }
+                            csvObjArr[i][csvFields[j]] = headMember.firstName + ' ' + headMember.lastName;
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
-                        }
+                            if(memberFields[j + hm] == 'accomodation')
+                            {
+                                if(headMember[memberFields[j + hm]])
+                                {
+                                    csvObjArr[i][csvFields[j]] = "Yes";
+                                }
+                                else
+                                {
+                                    csvObjArr[i][csvFields[j]] = "";
+                                }
+                            }
+                            else
+                            {
+                                csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
+                            }
                         
+                        }
                     }
-                    
+                    else
+                    {
+                        csvObjArr[i][csvFields[j]] = "<ERROR>";
+                    }
                 }
 
                 let event = await Event.findOne({teamID: teams[teamIDs[i].index]._id});
                 const e = -8;
                 for(let j = 8; j < 13; j++)
                 {
-                    if(event[eventFields[j + e]] != undefined)
+                    if(event != undefined)
                     {
-                        if(event[eventFields[j + e]] == "No")
+                        if(event[eventFields[j + e]] != undefined)
                         {
-                            csvObjArr[i][csvFields[j]] = "";
+                            if(event[eventFields[j + e]] == "No")
+                            {
+                                csvObjArr[i][csvFields[j]] = "";
+                            }
+                            else
+                            {
+                                csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
+                            }
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
+                            csvObjArr[i][csvFields[j]] = "";
                         }
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "";
+                        csvObjArr[i][csvFields[j]] = "<ERROR>";   
                     }
                 }
 
@@ -574,37 +587,44 @@ exports.getAllInfo = async (req, res, next) =>
                 let m = 0;
                 for(let j = 13; j < 25; j++)
                 {
-                    if(m < members.length)
+                    if(members[m] != undefined)
                     {
+                        if(m < members.length)
+                        {
                         
-                        if(j % 3 == 1)
-                        {
-                            csvObjArr[i][csvFields[j]] = members[m].firstName + ' ' + members[m].lastName;  
-                        }
-                        else if(j % 3 == 2)
-                        {
-                            csvObjArr[i][csvFields[j]] = members[m].email;   
-                        }
-                        else
-                        {
-                            if(members[m].accomodation == false)
+                            if(j % 3 == 1)
                             {
-                                csvObjArr[i][csvFields[j]] = "";    
+                                csvObjArr[i][csvFields[j]] = members[m].firstName + ' ' + members[m].lastName;  
+                            }
+                            else if(j % 3 == 2)
+                            {
+                                csvObjArr[i][csvFields[j]] = members[m].email;   
                             }
                             else
                             {
-                                csvObjArr[i][csvFields[j]] = "Yes";
+                                if(members[m].accomodation == false)
+                                {
+                                    csvObjArr[i][csvFields[j]] = "";    
+                                }
+                                else
+                                {
+                                    csvObjArr[i][csvFields[j]] = "Yes";
+                                }
+                                m++;
                             }
-                            m++;
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[j]] = "";
+                            if(j % 3 == 0)
+                            {
+                                m++;
+                            }
                         }
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "";
-                        if(j % 3 == 0)
-                        {
-                            m++;
-                        }
+                        csvObjArr[i][csvFields[j]] = "<ERROR>";
                     }
                 }
             }

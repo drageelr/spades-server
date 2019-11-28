@@ -624,7 +624,14 @@ exports.getAllInfo = async (req, res, next) =>
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "<ERROR>";
+                        if(m < members.length)
+                        {
+                            csvObjArr[i][csvFields[j]] = "<ERROR>";
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[j]] = "";
+                        }
                     }
                 }
             }

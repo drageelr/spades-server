@@ -13,7 +13,8 @@ router.get('/test', (req, res, next) => {
 });
 
 router.post('/register/submit', (req, res, next) => {
-    if(!configController.getRegLive())
+    let status = await configController.getRegLive();
+    if(!status)
     {
         res.redirect('/portal/regClosed.html');
     }

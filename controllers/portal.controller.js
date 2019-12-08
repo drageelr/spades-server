@@ -237,8 +237,8 @@ exports.checkReg = async (req, res, next) =>
         let teamReq = await Team.findById(req.body._id);
         if(!teamReq.registered)
         {
-            console.log('Log2: ' + configController.getRegLive());
-            if(configController.getRegLive())
+            let status = await configController.getRegLive();
+            if(status)
             {
                 next();
             }

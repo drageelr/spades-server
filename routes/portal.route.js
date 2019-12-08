@@ -14,7 +14,8 @@ router.use('/portal.html', jwt.verify, portalController.checkReg);
 
 router.post('/submit', jwt.verify, (req, res, next) =>
 {
-    if(!configController.getRegLive())
+    let status = await configController.getRegLive();
+    if(!status)
     {
         res.redirect('/portal/regClosed.html');
     }
@@ -26,9 +27,9 @@ router.post('/submit', jwt.verify, (req, res, next) =>
 
 router.post('/data', jwt.verify, portalController.viewData);
 
-router.get('/register.html', (req, res, next) => {
-    console.log('Log1: ' + configController.getRegLive());
-    if(!configController.getRegLive())
+router.get('/register.html', async (req, res, next) => {
+    let status = await configController.getRegLive();
+    if(!status)
     {
         res.redirect('/portal/regClosed.html');
         console.log('Transferred!');

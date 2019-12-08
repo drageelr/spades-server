@@ -27,9 +27,11 @@ router.post('/submit', jwt.verify, (req, res, next) =>
 router.post('/data', jwt.verify, portalController.viewData);
 
 router.get('/register.html', (req, res, next) => {
+    console.log('Log1: ' + configController.getRegLive());
     if(!configController.getRegLive())
     {
         res.redirect('/portal/regClosed.html');
+        console.log('Transferred!');
     }
     else
     {

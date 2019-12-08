@@ -37,6 +37,10 @@ router.get('/regsiter.html', (req, res, next) => {
     }
 })
 
+router.get('/regClosed.html', (req, res, next) => {
+    res.redirect('/sitedown/temp.html')
+})
+
 router.use('/', express.static('portal'));
 
 module.exports = router;

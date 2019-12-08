@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 
 // app.get('/datascrape', datascraper.AssembleData);
 
-// app.use('/sitedown', express.static('temp'));
+app.use('/sitedown', express.static('temp'));
 
 // app.use('/api', (req, res, next) => {
 //     res.redirect('/sitedown/temp.html')

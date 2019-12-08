@@ -12,7 +12,7 @@ router.get('/test', (req, res, next) => {
     res.json({status: 200, message: "Server Working!"});
 });
 
-router.post('/register/submit', (req, res, next) => {
+router.post('/register/submit', async (req, res, next) => {
     let status = await configController.getRegLive();
     if(!status)
     {

@@ -12,7 +12,7 @@ var configController = require('../controllers/config.controller');
 
 router.use('/portal.html', jwt.verify, portalController.checkReg);
 
-router.post('/submit', jwt.verify, (req, res, next) =>
+router.post('/submit', jwt.verify, async (req, res, next) =>
 {
     let status = await configController.getRegLive();
     if(!status)

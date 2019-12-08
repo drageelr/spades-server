@@ -700,11 +700,11 @@ exports.toggleReg = async (req, res, next) =>
                 let status = config[0].regLive;
                 if(status)
                 {
-                    config[0].regLive = false;
+                    await Config.findOneAndUpdate({}, {regLive: false});
                 }
                 else
                 {
-                    config[0].regLive = true;
+                    await Config.findOneAndUpdate({}, {regLive: true});
                 }
                 res.json({status: 200, message: 'Status changed FROM ' + status + ' TO ' + !status});
             }

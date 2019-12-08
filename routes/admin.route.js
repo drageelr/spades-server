@@ -32,7 +32,7 @@ router.get('/getHeadDelegates', adminController.getHeadEmails);
 
 router.get('/getAllInfo', adminController.getAllInfo);
 
-router.get('/toggleReg',);
+router.get('/toggleReg', adminController.toggleReg);
 
 //router.get('/member/:inst/:tID/:mID');
 

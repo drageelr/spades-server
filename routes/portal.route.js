@@ -7,12 +7,35 @@ var portalController = require('../controllers/portal.controller');
 var portalValidation = require('../validations/portal.validation');
 const validator = require('express-validation');
 
+var configController = require('../controllers/config.controller');
+
 
 router.use('/portal.html', jwt.verify, portalController.checkReg);
 
-router.post('/submit', jwt.verify, /*validator(portalValidation.portalSchema),*/ portalController.submit);
+router.post('/submit', jwt.verify, (req, res, next) =>
+{
+    if(!configController.getRegLive())
+    {
+        res.redirect('/portal/regClosed.html');
+    }
+    else
+    {
+        next();
+    }
+}, portalController.submit);
 
 router.post('/data', jwt.verify, portalController.viewData);
+
+router.get('/regsiter.html', (req, res, next) => {
+    if(!configController.getRegLive())
+    {
+        res.redirect('/portal/regClosed.html');
+    }
+    else
+    {
+        next();
+    }
+})
 
 router.use('/', express.static('portal'));
 

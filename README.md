@@ -48,3 +48,7 @@ Spades Server
 ## API version 13:
 1. Added text in form submission email
 2. Send Portal Error Info added
+
+## API version 14:
+1. Added Registration Toggler
+2. Dissabled Data Scrapper

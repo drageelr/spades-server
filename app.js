@@ -9,6 +9,8 @@ var apiRoute = require('./routes/api.route');
 var portalRoute = require('./routes/portal.route');
 var adminRoute = require('./routes/admin.route');
 
+var startService = require('./services/startSerivce');
+
 var datascraper = require('./services/datascraper');
 
 var app = express();
@@ -17,6 +19,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 
 // Add headers
 app.use(function (req, res, next) {
@@ -38,7 +41,7 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.get('/datascrape', datascraper.AssembleData);
+// app.get('/datascrape', datascraper.AssembleData);
 
 // app.use('/sitedown', express.static('temp'));
 
@@ -58,5 +61,7 @@ app.use('/admin', adminRoute);
 
 
 mongoose.connect();
+
+startService.start();
 
 module.exports = app;

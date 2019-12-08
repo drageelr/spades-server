@@ -5,6 +5,7 @@ var Inst = require('../models/inst.model');
 var Member = require('../models/member.model');
 var Admin = require('../models/admin.model');
 var Event = require('../models/event.model');
+var Config = require('../models/config.model');
 var jwt = require('../services/jwt');
 var transporter = require('../services/transporter');
 const { parseAsync } = require('json2csv');
@@ -684,5 +685,38 @@ exports.teamQR = async (req, res, next) =>
     {
         console.log(e);
         res.json({status: 500, message: "Internal Server Error!"});
+    }
+}
+
+exports.toggleReg = async (req, res, next) =>
+{
+    if(password == req.query.pass)
+    {
+        try
+        {
+            let config = await Config.find({});
+            if(config[0])
+            {
+                let status = config[0].regLive;
+                if(status)
+                {
+                    config[0].regLive = false;
+                }
+                else
+                {
+                    config[0].regLive = true;
+                }
+                res.json({status: 200, message: 'Status changed FROM ' + status + ' TO ' + !status});
+            }
+            else
+            {
+                res.json({status: 500, message: 'Cant find object!'});
+            }
+        }
+        catch(e)
+        {
+            console.log(e)
+            res.json({status: 500, message: 'Internal Server Error!'});
+        }
     }
 }

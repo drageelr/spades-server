@@ -6,11 +6,22 @@ var teamValidation = require('../validations/team.validation');
 const validator = require('express-validation');
 var jwt = require('../services/jwt');
 
+var configController = require('../controllers/config.controller');
+
 router.get('/test', (req, res, next) => {
     res.json({status: 200, message: "Server Working!"});
 });
 
-router.post('/register/submit', validator(teamValidation.registerSchema), teamController.register);
+router.post('/register/submit', (req, res, next) => {
+    if(!configController.getRegLive())
+    {
+        res.redirect('/portal/regClosed.html');
+    }
+    else
+    {
+        next();
+    }
+}, validator(teamValidation.registerSchema), teamController.register);
 
 router.post('/login/submit', validator(teamValidation.loginSchema), teamController.login);
 

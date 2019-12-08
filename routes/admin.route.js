@@ -32,6 +32,8 @@ router.get('/getHeadDelegates', adminController.getHeadEmails);
 
 router.get('/getAllInfo', adminController.getAllInfo);
 
+router.get('/toggleReg',);
+
 //router.get('/member/:inst/:tID/:mID');
 
 //router.get('/team/:type/:tID', adminController.teamQR);

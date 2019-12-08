@@ -8,6 +8,8 @@ var Counter = require('../models/counter.model');
 
 var transporter = require('../services/transporter');
 
+var configController = require('../controllers/config.controller');
+
 const http = require('http');
 
 async function getTeamNum()
@@ -235,7 +237,14 @@ exports.checkReg = async (req, res, next) =>
         let teamReq = await Team.findById(req.body._id);
         if(!teamReq.registered)
         {
-            next();
+            if(configController.getRegLive())
+            {
+                next();
+            }
+            else
+            {
+                res.redirect('/portal/regClosed.html');
+            }
         }
         else
         {

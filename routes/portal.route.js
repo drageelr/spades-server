@@ -26,7 +26,7 @@ router.post('/submit', jwt.verify, (req, res, next) =>
 
 router.post('/data', jwt.verify, portalController.viewData);
 
-router.get('/regsiter.html', (req, res, next) => {
+router.get('/register.html', (req, res, next) => {
     if(!configController.getRegLive())
     {
         res.redirect('/portal/regClosed.html');

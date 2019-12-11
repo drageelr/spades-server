@@ -15,7 +15,7 @@ router.get('/test', (req, res, next) => {
 router.post('/register/submit', async (req, res, next) => {
     let status = await configController.getRegLive();
     console.log("Status: " + status);
-    if(!status)
+    if(status == false)
     {
         res.redirect('/portal/regClosed.html');
     }

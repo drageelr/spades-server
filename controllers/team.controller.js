@@ -40,7 +40,6 @@ exports.register = async (req, res, next) => {
         res.json(e.errors);
     }
 }
-}
 
 exports.login = async (req, res, next) => {
     // Store params

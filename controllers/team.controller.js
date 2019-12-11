@@ -5,48 +5,41 @@ var transporter = require('../services/transporter');
 var jwt = require('../services/jwt');
 var Team = require('../models/team.model');
 
-var config = require('../config/index').variables;
 
 exports.register = async (req, res, next) => {
 
-    if(config.regLive)
-    {
-        // Store params
-        let params = req.body;
+    // Store params
+    let params = req.body;
 
-        // Generate activation key
-        params.activationKey = uuidv1();
+    // Generate activation key
+    params.activationKey = uuidv1();
+
+    try
+    {
+        // Check for Duplicate Team
+        let duplicateTeam = await Team.findOne({email: params.email});
+        if(duplicateTeam)
+        {
+            res.json({status: 409, message: 'Duplicate Email!'});
+        }
+        else
+        {
+            // Save team to database
+            let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: false, paid: false, registered: false, verified: false});
+            await teamObj.save();
+
+            // Email activation key
+            transporter.sendActivationKey(params.email, params.activationKey);
     
-        try
-        {
-            // Check for Duplicate Team
-            let duplicateTeam = await Team.findOne({email: params.email});
-            if(duplicateTeam)
-            {
-                res.json({status: 409, message: 'Duplicate Email!'});
-            }
-            else
-            {
-                // Save team to database
-                let teamObj = new Team({email: params.email, password: params.password, name: params.name, activationKey: params.activationKey, active: false, paid: false, registered: false, verified: false});
-                await teamObj.save();
-
-                // Email activation key
-                transporter.sendActivationKey(params.email, params.activationKey);
-        
-                res.json({status: 200, message: 'Account Created!'});
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-            res.json(e.errors);
+            res.json({status: 200, message: 'Account Created!'});
         }
     }
-    else
+    catch(e)
     {
-        res.redirect('/portal/regClosed.html');
+        console.log(e);
+        res.json(e.errors);
     }
+}
 }
 
 exports.login = async (req, res, next) => {

@@ -727,7 +727,6 @@ exports.toggleVerify = async (req, res, next) =>
 
     try
     {
-        console.log('_id: ' + params._id);
         let teamReq = await Team.findById(params._id, 'registered verified');
         if(teamReq)
         {
@@ -759,7 +758,6 @@ exports.togglePaid = async (req, res, next) =>
 
     try
     {
-        console.log('_id: ' + params._id);
         let teamReq = await Team.findById(params._id, 'registered verified paid');
         if(teamReq)
         {

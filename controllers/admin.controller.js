@@ -770,7 +770,7 @@ exports.togglePaid = async (req, res, next) =>
                 }
                 else
                 {
-                    res.json({status: 400, message: 'Team not verified!'});
+                    res.json({status: 400, message: 'Team not verified or selected!'});
                 }
             }
             else

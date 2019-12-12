@@ -735,6 +735,14 @@ exports.toggleVerify = async (req, res, next) =>
                 await Team.findByIdAndUpdate(params._id, {paid: !teamReq.verified});
                 res.json({status: 200, message: "Value changed!"});
             }
+            else
+            {
+                res.json({status: 400, message: 'Team not registered!'});
+            }
+        }
+        else
+        {
+            res.json({status: 400, message: 'Team not found!'});
         }
     }
     catch(e)
@@ -765,6 +773,14 @@ exports.togglePaid = async (req, res, next) =>
                     res.json({status: 400, message: 'Team not verified!'});
                 }
             }
+            else
+            {
+                res.json({status: 400, message: 'Team not registered!'});
+            }
+        }
+        else
+        {
+            res.json({status: 400, message: 'Team not found!'});
         }
     }
     catch(e)

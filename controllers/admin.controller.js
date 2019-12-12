@@ -720,3 +720,26 @@ exports.toggleReg = async (req, res, next) =>
         }
     }
 }
+
+exports.togglePaid = async (req, res, next) =>
+{
+    let params = req.body;
+
+    try
+    {
+        let teamReq = await Team.findById(params._id, 'registered paid');
+        if(teamReq)
+        {
+            if(teamReq.registered)
+            {
+                await Team.findByIdAndUpdate(params._id, {paid: !teamReq.paid});
+                res.json({status: 200, message: "Value changed!"});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

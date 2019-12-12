@@ -10,6 +10,8 @@ router.post('/login/submit', adminController.login);
 
 router.post('/search', jwt.verifyAdmin, adminController.search);
 
+router.post('/togglePaid', jwt.verifyAdmin, adminController.togglePaid);
+
 router.post('/data', jwt.verifyAdmin, portalController.viewData);
 
 //router.get('/dataQR', jwt.verify, portalController.viewData);

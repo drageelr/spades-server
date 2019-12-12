@@ -52,3 +52,6 @@ Spades Server
 ## API version 14:
 1. Added Registration Toggler
 2. Dissabled Data Scrapper
+
+## API version 15:
+1. Toggle Paid API Added

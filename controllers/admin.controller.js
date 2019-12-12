@@ -732,7 +732,7 @@ exports.toggleVerify = async (req, res, next) =>
         {
             if(teamReq.registered)
             {
-                await Team.findByIdAndUpdate(params._id, {paid: !teamReq.verified});
+                await Team.findByIdAndUpdate(params._id, {verified: !teamReq.verified});
                 res.json({status: 200, message: "Value changed!"});
             }
             else

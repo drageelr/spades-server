@@ -12,6 +12,8 @@ router.post('/search', jwt.verifyAdmin, adminController.search);
 
 router.post('/togglePaid', jwt.verifyAdmin, adminController.togglePaid);
 
+router.post('/toggleVerify', jwt.verifyAdmin, adminController.toggleVerify);
+
 router.post('/data', jwt.verifyAdmin, portalController.viewData);
 
 //router.get('/dataQR', jwt.verify, portalController.viewData);

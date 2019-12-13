@@ -479,9 +479,8 @@ exports.getAllInfo = async (req, res, next) =>
                     teamIDs[i2].teamID = teams[i].teamID;
                     teamIDs[i2].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
                     teamIDs[i2].index = i;
+                    i2++;
                 }
-                
-                i2++;
             }
             
             // Sort TeamIDs
@@ -505,7 +504,7 @@ exports.getAllInfo = async (req, res, next) =>
             }
 
 
-            for(let i = 0; i < teams.length; i++)
+            for(let i = 0; i < teamIDs.length; i++)
             {
                 csvObjArr[i] = {};
                 csvObjArr[i]['#'] = i + 1;

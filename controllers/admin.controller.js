@@ -473,7 +473,7 @@ exports.getAllInfo = async (req, res, next) =>
             let i2 = 0;
             for(let i = 0; i < teams.length; i++)
             {
-                if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid = 'true' && teams[i].paid == true))
+                if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid == 'true' && teams[i].paid == true))
                 {
                     teamIDs[i2] = {};
                     teamIDs[i2].teamID = teams[i].teamID;

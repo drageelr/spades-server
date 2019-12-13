@@ -457,6 +457,8 @@ exports.getAllInfo = async (req, res, next) =>
 {
     try
     {
+        let onlyVerified = req.query.selected;
+        let onlyPaid = req.query.paid;
         if(req.query.pass == password)
         {
             let csvFields = ['#', 'Team_ID', 'Team_Name', 'Selected', 'Paid', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Head_Delegate_Acc', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Acc_1', 'Delegate_2', 'Email_2', 'Acc_2', 'Delegate_3', 'Email_3', 'Acc_3', 'Delegate_4', 'Email_4', 'Acc_4'];
@@ -468,12 +470,18 @@ exports.getAllInfo = async (req, res, next) =>
             
             // Store TeamIDs Seperately
             let teamIDs = [];
+            let i2 = 0;
             for(let i = 0; i < teams.length; i++)
             {
-                teamIDs[i] = {};
-                teamIDs[i].teamID = teams[i].teamID;
-                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
-                teamIDs[i].index = i;
+                if((onlyVerified == 'true' && teams[i].verified) || (onlyPaid = 'true' && teams[i].paid))
+                {
+                    teamIDs[i2] = {};
+                    teamIDs[i2].teamID = teams[i].teamID;
+                    teamIDs[i2].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                    teamIDs[i2].index = i;
+                }
+                
+                i2++;
             }
             
             // Sort TeamIDs

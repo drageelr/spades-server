@@ -473,7 +473,7 @@ exports.getAllInfo = async (req, res, next) =>
             let i2 = 0;
             for(let i = 0; i < teams.length; i++)
             {
-                if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid == 'true' && teams[i].paid == true))
+                if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid == 'true' && teams[i].paid == true) || (onlyVerified != 'true' && onlyPaid != 'true'))
                 {
                     teamIDs[i2] = {};
                     teamIDs[i2].teamID = teams[i].teamID;
@@ -503,146 +503,97 @@ exports.getAllInfo = async (req, res, next) =>
                 }
             }
 
-
             for(let i = 0; i < teamIDs.length; i++)
             {
-                csvObjArr[i] = {};
-                csvObjArr[i]['#'] = i + 1;
+                let x = 0;
+                let tIndex = teamIDs[i].index;
 
-                const t = -1;
-                for(let j = 1; j < 5; j++)
+                // Add #
+                csvObjArr[i][csvFields[x]] = i + 1;
+                x++;
+
+                // Add Team Data
+                for(let j = 0; j < teamFields.length; j++)
                 {
-                    csvObjArr[i][csvFields[j]] = teams[teamIDs[i].index][teamFields[j + t]];
+                    csvObjArr[i][csvFields[x]] = teams[tIndex][teamFields[j]];
+                    x++;
                 }
 
-                let inst = await Inst.findOne({teamID: teams[teamIDs[i].index]._id}, 'name createdAt');
-                if(inst != undefined)
+                // Add Inst Data
+                let inst = await Inst.find({teamID: teams[tIndex]._id}, 'name');
+                if(inst)
                 {
-                    csvObjArr[i].Institution_Name = inst.name;
+                    csvObjArr[i][csvFields[x]] = inst.name;
                 }
                 else
                 {
-                    csvObjArr[i].Institution_Name = "<ERROR>";
-                    console.log('Corrupt TeamID: ' + teams[i].name);
+                    csvObjArr[i][csvFields[x]] = '<ERROR>';
                 }
-                const earlyDT = new Date('')
-                
+                x++;
+
+                // Add Head Delegate Data
                 let headMember = await Member.findById(teams[teamIDs[i].index].headDelegateID, 'firstName lastName email phone accomodation');
-                const hm = -6;
-                for(let j = 6; j < 10; j++)
+                for(let j = 0; j < memberFields.length; j++)
                 {
-                    if(headMember != undefined)
+                    if(headMember)
                     {
-                        if(memberFields[j + hm] == "name")
+                        if(j == 0)
                         {
-                            csvObjArr[i][csvFields[j]] = headMember.firstName + ' ' + headMember.lastName;
+                            csvObjArr[i][csvFields[x]] = headMember.firstName + ' ' + headMember.lastName;    
                         }
                         else
                         {
-                            if(memberFields[j + hm] == 'accomodation')
-                            {
-                                if(headMember[memberFields[j + hm]])
-                                {
-                                    csvObjArr[i][csvFields[j]] = "Yes";
-                                }
-                                else
-                                {
-                                    csvObjArr[i][csvFields[j]] = "";
-                                }
-                            }
-                            else
-                            {
-                                csvObjArr[i][csvFields[j]] = headMember[memberFields[j + hm]];
-                            }
-                        
-                        }
+                            csvObjArr[i][csvFields[x]] = headMember[memberFields[j]];
+                        }   
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "<ERROR>";
+                        csvObjArr[i][csvFields[x]] = '<ERROR>';
                     }
+                    x++;
                 }
 
-                let event = await Event.findOne({teamID: teams[teamIDs[i].index]._id});
-                const e = -10;
-                for(let j = 10; j < 15; j++)
+                // Add Event Data
+                let event = await Event.find({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
+                for(let j = 0; j < eventFields.length; j++)
                 {
-                    if(event != undefined)
+                    if(event)
                     {
-                        if(event[eventFields[j + e]] != undefined)
-                        {
-                            if(event[eventFields[j + e]] == "No")
-                            {
-                                csvObjArr[i][csvFields[j]] = "";
-                            }
-                            else
-                            {
-                                csvObjArr[i][csvFields[j]] = event[eventFields[j + e]];
-                            }
-                        }
-                        else
-                        {
-                            csvObjArr[i][csvFields[j]] = "";
-                        }
+                        csvObjArr[i][csvFields[x]] = event[eventFields[j]];
                     }
                     else
                     {
-                        csvObjArr[i][csvFields[j]] = "<ERROR>";   
+                        csvObjArr[i][csvFields[x]] = '<ERROR>';
                     }
+                    x++;
                 }
 
-                let members = await Member.find({teamID: teams[teamIDs[i].index]._id, _id: {$ne: teams[teamIDs[i].index].headDelegateID}}, 'firstName lastName email phone accomodation');
-                let m = 0;
-                for(let j = 15; j < 27; j++)
+                // Add Member Data
+                let members = await Member.find({teamID: teams[tIndex]._id, _id: {$ne: teams[tIndex].headDelegateID}}, 'firstName lastName email phone accomodation');
+                for(let m = 0; m < members.length; m++)
                 {
-                    if(members[m] != undefined)
+                    for(let j = 0; j < memberFields.length; j++)
                     {
-                        if(m < members.length)
+                        if(members[m])
                         {
-                        
-                            if(j % 3 == 1)
+                            if(j == 0)
                             {
-                                csvObjArr[i][csvFields[j]] = members[m].firstName + ' ' + members[m].lastName;  
-                            }
-                            else if(j % 3 == 2)
-                            {
-                                csvObjArr[i][csvFields[j]] = members[m].email;   
+                                csvObjArr[i][csvFields[x]] = members[m].firstName + ' ' + members[m].lastName;    
                             }
                             else
                             {
-                                if(members[m].accomodation == false)
-                                {
-                                    csvObjArr[i][csvFields[j]] = "";    
-                                }
-                                else
-                                {
-                                    csvObjArr[i][csvFields[j]] = "Yes";
-                                }
-                                m++;
-                            }
+                                csvObjArr[i][csvFields[x]] = members[m][memberFields[j]];
+                            }   
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[j]] = "";
-                            if(j % 3 == 0)
-                            {
-                                m++;
-                            }
+                            csvObjArr[i][csvFields[x]] = '<ERROR>';
                         }
-                    }
-                    else
-                    {
-                        if(m < members.length)
-                        {
-                            csvObjArr[i][csvFields[j]] = "<ERROR>";
-                        }
-                        else
-                        {
-                            csvObjArr[i][csvFields[j]] = "";
-                        }
+                        x++;
                     }
                 }
             }
+
 
 
             const path = './temp/AllInfo.csv'

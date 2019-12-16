@@ -56,3 +56,4 @@ Spades Server
 ## API version 15:
 1. Toggle Paid API Added
 2. Toggle Verify API Added
+3. Get All Info Event Search Option Added

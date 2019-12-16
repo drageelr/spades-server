@@ -471,7 +471,19 @@ exports.getAllInfo = async (req, res, next) =>
             let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone'];
             let memberFields = ['name', 'email', 'phone', 'accomodation'];
             let teams = await Team.find({registered: true}, '_id teamID name headDelegateID verified paid');
-            
+            let eventSearchCheck = false;
+
+            // Set Event as false
+            if(!eLogical) eLogical = '-';
+            if(!eMystery) eMystery = '-';
+            if(!eEngineering) eEngineering = '-';
+            if(!eDrogone) eDrogone = '-';
+
+            if(eLogical != '-' || eMystery != '-' || eEngineering != '-' || eDrogone != '-')
+            {
+                eventSearchCheck = true;
+            }
+
             // Store TeamIDs Seperately
             let teamIDs = [];
             let i2 = 0;
@@ -479,12 +491,19 @@ exports.getAllInfo = async (req, res, next) =>
             {
                 if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid == 'true' && teams[i].paid == true) || (onlyVerified != 'true' && onlyPaid != 'true'))
                 {
-                    
-                    teamIDs[i2] = {};
-                    teamIDs[i2].teamID = teams[i].teamID;
-                    teamIDs[i2].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
-                    teamIDs[i2].index = i;
-                    i2++;
+                    let event = false;
+                    if(eventSearchCheck)
+                    {
+                        event = await Event.findOne({teamID: teams[i]._id, $or:{logical: eLogical, mystery: eMystery, engineering: eEngineering, drogone: eDrogone}});
+                    }
+                    if(event)
+                    {
+                        teamIDs[i2] = {};
+                        teamIDs[i2].teamID = teams[i].teamID;
+                        teamIDs[i2].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                        teamIDs[i2].index = i;
+                        i2++;
+                    }
                 }
             }
             
@@ -562,19 +581,31 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 // Add Event Data
-                let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
-                for(let j = 0; j < eventFields.length; j++)
+                if(eLogical != '-' || eMystery != '-' || eEngineering != '-' || eDrogone != '-')
                 {
-                    if(event)
+                    for(let j = 0; j < eventFields.length; j++)
                     {
-                        csvObjArr[i][csvFields[x]] = event[eventFields[j]];
+                        csvObjArr[i][csvFields[x]] = '<EVENT>';
+                        x++;
                     }
-                    else
-                    {
-                        csvObjArr[i][csvFields[x]] = '<ERROR>';
-                    }
-                    x++;
                 }
+                else
+                {
+                    let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
+                    for(let j = 0; j < eventFields.length; j++)
+                    {
+                        if(event)
+                        {
+                            csvObjArr[i][csvFields[x]] = event[eventFields[j]];
+                        }
+                        else
+                        {
+                            csvObjArr[i][csvFields[x]] = '<ERROR>';
+                        }
+                        x++;
+                    }
+                }
+                
 
                 // Add Member Data
                 let members = await Member.find({teamID: teams[tIndex]._id, _id: {$ne: teams[tIndex].headDelegateID}}, 'firstName lastName email phone accomodation');
@@ -613,19 +644,19 @@ exports.getAllInfo = async (req, res, next) =>
             {
                 path += '[Selected]';
             }
-            if(eLogical)
+            if(eLogical != '-')
             {
                 path += '[' + eLogical + ']';
             }
-            if(eMystery)
+            if(eMystery != '-')
             {
                 path += '[' + eMystery + ']';
             }
-            if(eEngineering)
+            if(eEngineering != '-')
             {
                 path += '[' + eEngineering + ']';
             }
-            if(eDrogone)
+            if(eDrogone != '-')
             {
                 path += '[Drogone]';
             }

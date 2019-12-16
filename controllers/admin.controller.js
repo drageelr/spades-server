@@ -474,15 +474,39 @@ exports.getAllInfo = async (req, res, next) =>
             let eventSearchCheck = false;
 
             // Set Event as false
-            if(!eLogical) eLogical = '-';
-            if(!eMystery) eMystery = '-';
-            if(!eEngineering) eEngineering = '-';
-            if(!eDrogone) eDrogone = '-';
-
-            if(eLogical != '-' || eMystery != '-' || eEngineering != '-' || eDrogone != '-')
+            if(!eLogical)
             {
-                eventSearchCheck = true;
+                eLogical = '-';  
             }
+            else
+            {
+                eventSearchCheck = 'logical';
+            } 
+            if(!eMystery)
+            {
+                eMystery = '-';
+            }
+            else
+            {
+                eventSearchCheck = 'mystery';
+            } 
+            if(!eEngineering)
+            {
+                eEngineering = '-';
+            }
+            else
+            {
+                eventSearchCheck = 'engineering'; 
+            } 
+            if(!eDrogone)
+            {
+                eDrogone = '-';
+            }
+            else
+            {
+                eventSearchCheck = 'drogone';
+            } 
+
 
             // Store TeamIDs Seperately
             let teamIDs = [];
@@ -581,29 +605,25 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 // Add Event Data
-                if(eLogical != '-' || eMystery != '-' || eEngineering != '-' || eDrogone != '-')
+                let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
+                for(let j = 0; j < eventFields.length; j++)
                 {
-                    for(let j = 0; j < eventFields.length; j++)
+                    if(event)
                     {
-                        csvObjArr[i][csvFields[x]] = '<EVENT>';
-                        x++;
-                    }
-                }
-                else
-                {
-                    let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
-                    for(let j = 0; j < eventFields.length; j++)
-                    {
-                        if(event)
+                        if(eventSearchCheck)
                         {
-                            csvObjArr[i][csvFields[x]] = event[eventFields[j]];
+                            csvObjArr[i][csvFields[x]] = event[eventSearchCheck];
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[x]] = '<ERROR>';
+                            csvObjArr[i][csvFields[x]] = event[eventFields[j]];
                         }
-                        x++;
                     }
+                    else
+                    {
+                        csvObjArr[i][csvFields[x]] = '<ERROR>';
+                    }
+                    x++;
                 }
                 
 

@@ -508,6 +508,9 @@ exports.getAllInfo = async (req, res, next) =>
                 let x = 0;
                 let tIndex = teamIDs[i].index;
 
+                // Create Object For Team
+                csvObjArr[i] = {};
+
                 // Add #
                 csvObjArr[i][csvFields[x]] = i + 1;
                 x++;

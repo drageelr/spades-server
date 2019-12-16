@@ -494,7 +494,7 @@ exports.getAllInfo = async (req, res, next) =>
                     let event = false;
                     if(eventSearchCheck)
                     {
-                        event = await Event.findOne({teamID: teams[i]._id, $or:{logical: eLogical, mystery: eMystery, engineering: eEngineering, drogone: eDrogone}});
+                        event = await Event.findOne({teamID: teams[i]._id, $or:[{logical: eLogical}, {mystery: eMystery}, {engineering: eEngineering}, {drogone: eDrogone}]});
                     }
                     if(event)
                     {

@@ -528,7 +528,7 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 // Add Inst Data
-                let inst = await Inst.find({teamID: teams[tIndex]._id}, 'name');
+                let inst = await Inst.findOne({teamID: teams[tIndex]._id}, 'name');
                 if(inst)
                 {
                     csvObjArr[i][csvFields[x]] = inst.name;
@@ -562,7 +562,7 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 // Add Event Data
-                let event = await Event.find({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
+                let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
                 for(let j = 0; j < eventFields.length; j++)
                 {
                     if(event)

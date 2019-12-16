@@ -459,9 +459,13 @@ exports.getAllInfo = async (req, res, next) =>
     {
         let onlyVerified = req.query.selected;
         let onlyPaid = req.query.paid;
+        let eLogical = req.query.eL;
+        let eMystery = req.query.eM;
+        let eEngineering = req.query.eE;
+        let eDrogone = req.query.drogone;
         if(req.query.pass == password)
         {
-            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Selected', 'Paid', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Head_Delegate_Acc', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Acc_1', 'Delegate_2', 'Email_2', 'Acc_2', 'Delegate_3', 'Email_3', 'Acc_3', 'Delegate_4', 'Email_4', 'Acc_4'];
+            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Selected', 'Paid', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Head_Delegate_Acc', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Phone_1', 'Acc_1', 'Delegate_2', 'Email_2', 'Phone_2', 'Acc_2', 'Delegate_3', 'Email_3', 'Phone_3', 'Acc_3', 'Delegate_4', 'Email_4', 'Phone_4', 'Acc_4'];
             let csvObjArr = [];
             let teamFields = ['teamID', 'name', 'verified', 'paid'];
             let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone'];
@@ -475,6 +479,7 @@ exports.getAllInfo = async (req, res, next) =>
             {
                 if((onlyVerified == 'true' && teams[i].verified == true) || (onlyPaid == 'true' && teams[i].paid == true) || (onlyVerified != 'true' && onlyPaid != 'true'))
                 {
+                    
                     teamIDs[i2] = {};
                     teamIDs[i2].teamID = teams[i].teamID;
                     teamIDs[i2].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
@@ -573,7 +578,7 @@ exports.getAllInfo = async (req, res, next) =>
 
                 // Add Member Data
                 let members = await Member.find({teamID: teams[tIndex]._id, _id: {$ne: teams[tIndex].headDelegateID}}, 'firstName lastName email phone accomodation');
-                for(let m = 0; m < members.length; m++)
+                for(let m = 0; m < 4; m++)
                 {
                     for(let j = 0; j < memberFields.length; j++)
                     {
@@ -590,7 +595,7 @@ exports.getAllInfo = async (req, res, next) =>
                         }
                         else
                         {
-                            csvObjArr[i][csvFields[x]] = '<ERROR>';
+                            csvObjArr[i][csvFields[x]] = '';
                         }
                         x++;
                     }
@@ -599,7 +604,33 @@ exports.getAllInfo = async (req, res, next) =>
 
 
 
-            const path = './temp/AllInfo.csv'
+            let path = './temp/AllInfo';
+            if(onlyPaid)
+            {
+                path += '[Paid]';
+            }
+            if(onlyVerified)
+            {
+                path += '[Selected]';
+            }
+            if(eLogical)
+            {
+                path += '[' + eLogical + ']';
+            }
+            if(eMystery)
+            {
+                path += '[' + eMystery + ']';
+            }
+            if(eEngineering)
+            {
+                path += '[' + eEngineering + ']';
+            }
+            if(eDrogone)
+            {
+                path += '[Drogone]';
+            }
+            path += '.csv';
+            
 
             parseAsync(csvObjArr, {csvFields})
             .then(csv => {
@@ -688,13 +719,20 @@ exports.toggleVerify = async (req, res, next) =>
 
     try
     {
-        let teamReq = await Team.findById(params._id, 'registered verified');
+        let teamReq = await Team.findById(params._id, 'registered verified paid');
         if(teamReq)
         {
             if(teamReq.registered)
             {
-                await Team.findByIdAndUpdate(params._id, {verified: !teamReq.verified});
-                res.json({status: 200, message: "Value changed!"});
+                if(teamReq.paid && teamReq.verified)
+                {
+                    res.json({status: 400, message: 'Un-Pay the team then Un-Select it!'});
+                }
+                else
+                {
+                    await Team.findByIdAndUpdate(params._id, {verified: !teamReq.verified});
+                    res.json({status: 200, message: "Value changed!"});
+                }
             }
             else
             {

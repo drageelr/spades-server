@@ -520,7 +520,7 @@ exports.getAllInfo = async (req, res, next) =>
                     {
                         event = await Event.findOne({teamID: teams[i]._id, $or:[{logical: eLogical}, {mystery: eMystery}, {engineering: eEngineering}, {drogone: eDrogone}]});
                     }
-                    if(event)
+                    if((event && eventSearchCheck) || !eventSearchCheck)
                     {
                         teamIDs[i2] = {};
                         teamIDs[i2].teamID = teams[i].teamID;

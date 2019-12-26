@@ -35,6 +35,9 @@ const eventSchema = new Schema({
     },
     ambassadorPhone: {
         type: String,
+    },
+    allotted: {
+        type: Boolean
     }
 });
 

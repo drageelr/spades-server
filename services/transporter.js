@@ -86,3 +86,21 @@ exports.sendFormError = (emailTeam, nameTeam, errorMsg) =>
         }
     });
 }
+
+exports.sendEventAllotment = (emailTarget, teamID, eventsAllotted, eventCount) =>
+{
+    var mailOptions = {
+        from: 'noreply <noreplyspades@gmail.com>',
+        to: 'spadesIT1920@gmail.com', //emailTarget,
+        subject: 'Event Allotment',
+        html: `<div><h1>Spades Event Allotment</h1><b><p>Team ID: ${teamID} <br> Events Allotted: ${eventCount} <br> Logical: ${eventsAllotted.logical} <br> Mystery: ${eventsAllotted.mystery} <br> Engineering: ${eventsAllotted.engineering} <br> Drogone: ${eventsAllotted.logical} </p></b></div>`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Error Email sent: ' + info.response);
+        }
+    });
+}

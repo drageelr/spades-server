@@ -839,3 +839,27 @@ exports.togglePaid = async (req, res, next) =>
         res.json({status: 500, message: 'Internal Server Error!'});
     }
 }
+
+exports.allotEvents = async (req, res, next) =>
+{
+    try
+    {
+        let params = req.body;
+        let teamReq = await Team.findById(_id, 'registered teamID email');
+        if(teamReq)
+        {
+            if(teamReq.registered)
+            {
+                await Event.findOneAndUpdate({teamID: params_id}, {number: params.number, logical: params.logical, mystery: params.mystery, engineering: params.engineering, drogone: params.drogone, allotted: true});
+                let events = {logical: params.logical, mystery: params.mystery, engineering: params.engineering, drogone: params.drogone};
+                transporter.sendEventAllotment(email, teamID, events, params.number);
+                res.json({status: 200, message: 'Events Allotted!'});
+            }
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}

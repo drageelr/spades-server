@@ -16,6 +16,8 @@ router.post('/toggleVerify', jwt.verifyAdmin, adminController.toggleVerify);
 
 router.post('/data', jwt.verifyAdmin, portalController.viewData);
 
+router.post('/allotEvents', jwt.verifyAdmin, adminController.allotEvents);
+
 //router.get('/dataQR', jwt.verify, portalController.viewData);
 
 router.post('/changephoto', jwt.verifyAdmin, adminController.changePhoto);

@@ -24,7 +24,7 @@ let verification = (token) =>
 }
 
 exports.verify = async (req, res, next) => {
-    let token = req.url.split("=")[1];
+    let token = req.query.token;
     // if(req.headers.authorization)
     // {
     //     token = req.headers.authorization.substring(7); 
@@ -51,7 +51,7 @@ exports.verify = async (req, res, next) => {
 }
 
 exports.verifyAdmin = async (req, res, next) => {
-    let token = req.url.split("=")[1];
+    let token = req.query.token;
     let decoded = verification(token);
     if(decoded)
     {

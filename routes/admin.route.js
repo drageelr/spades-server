@@ -22,19 +22,23 @@ router.post('/changephoto', jwt.verifyAdmin, adminController.changePhoto);
 
 router.get('/admin.html', jwt.verifyAdmin);
 
-router.get('/delete', adminController.deleteTeamData);
+router.get('/adminpanel.html', jwt.verifyAdmin);
 
-router.get('/activate', adminController.activateTeam);
+router.get('/sheets.html', jwt.verifyAdmin);
 
-router.get('/cteamID', adminController.changeTeamID);
+// router.get('/delete', adminController.deleteTeamData);
+
+// router.get('/activate', adminController.activateTeam);
+
+// router.get('/cteamID', adminController.changeTeamID);
 
 router.get('/evalform', adminController.sendEvalForm);
 
 router.get('/fixTeams', adminController.fixInvalidTeams);
 
-router.get('/getHeadDelegates', adminController.getHeadEmails);
+// router.get('/getHeadDelegates', adminController.getHeadEmails);
 
-router.get('/getAllInfo', adminController.getAllInfo);
+router.post('/getAllInfo', jwt.verifyAdmin, adminController.getAllInfo);
 
 router.get('/toggleReg', adminController.toggleReg);
 

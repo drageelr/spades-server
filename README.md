@@ -57,3 +57,6 @@ Spades Server
 1. Toggle Paid API Added
 2. Toggle Verify API Added
 3. Get All Info Event Search Option Added
+
+## API version 16:
+1. Get All Info API to POST

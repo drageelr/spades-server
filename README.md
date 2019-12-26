@@ -59,4 +59,4 @@ Spades Server
 3. Get All Info Event Search Option Added
 
 ## API version 16:
-1. Get All Info API to POST
+1. Get All Info API in Sheets.html

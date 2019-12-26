@@ -38,7 +38,7 @@ router.get('/fixTeams', adminController.fixInvalidTeams);
 
 // router.get('/getHeadDelegates', adminController.getHeadEmails);
 
-router.post('/getAllInfo', jwt.verifyAdmin, adminController.getAllInfo);
+router.get('/getAllInfo', jwt.verifyAdmin, adminController.getAllInfo);
 
 router.get('/toggleReg', adminController.toggleReg);
 

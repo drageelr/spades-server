@@ -852,7 +852,7 @@ exports.allotEvents = async (req, res, next) =>
             {
                 await Event.findOneAndUpdate({teamID: params._id}, {number: params.number, logical: params.logical, mystery: params.mystery, engineering: params.engineering, drogone: params.drogone, allotted: true});
                 let events = {logical: params.logical, mystery: params.mystery, engineering: params.engineering, drogone: params.drogone};
-                transporter.sendEventAllotment(email, teamID, events, params.number);
+                transporter.sendEventAllotment(teamReq.email, teamReq.teamID, events, params.number);
                 res.json({status: 200, message: 'Events Allotted!'});
             }
         }

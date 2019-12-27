@@ -91,7 +91,7 @@ exports.sendEventAllotment = (emailTarget, teamID, eventsAllotted, eventCount) =
 {
     var mailOptions = {
         from: 'noreply <noreplyspades@gmail.com>',
-        to: 'spadesIT1920@gmail.com', //emailTarget,
+        to: emailTarget,
         subject: 'Event Allotment',
         html: `<div><h1>Spades PSIFI Event Allotment</h1><b><p>Team ID: ${teamID} <br> Events Allotted: ${eventCount} <br> Logical: ${eventsAllotted.logical} <br> Mystery: ${eventsAllotted.mystery} <br> Engineering: ${eventsAllotted.engineering} <br> Drogone: ${eventsAllotted.drogone} </p></b></div>`
     };

@@ -845,7 +845,7 @@ exports.allotEvents = async (req, res, next) =>
     try
     {
         let params = req.body;
-        let teamReq = await Team.findById(_id, 'registered teamID email');
+        let teamReq = await Team.findById(params._id, 'registered teamID email');
         if(teamReq)
         {
             if(teamReq.registered)

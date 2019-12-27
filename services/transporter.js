@@ -93,7 +93,41 @@ exports.sendEventAllotment = (emailTarget, teamID, eventsAllotted, eventCount) =
         from: 'noreply <noreplyspades@gmail.com>',
         to: emailTarget,
         subject: 'Event Allotment',
-        html: `<div><h1>Spades PSIFI Event Allotment</h1><b><p>Team ID: ${teamID} <br> Events Allotted: ${eventCount} <br> Logical: ${eventsAllotted.logical} <br> Mystery: ${eventsAllotted.mystery} <br> Engineering: ${eventsAllotted.engineering} <br> Drogone: ${eventsAllotted.drogone} </p></b></div>`
+        html: `<div>
+        <h1>Spades PSIFI Event Allotment</h1>
+        <p>
+        Dear Participant,<br>
+        <br>
+        This is to confirm your payment and event allotments for PsiFi XI!<br>
+        Congratulations for being a part of the PsiFi family.<br>
+        <b>
+        Team ID: ${teamID}<br>
+        Events Allotted: ${eventCount}<br>
+        Logical: ${eventsAllotted.logical}<br>
+        Mystery: ${eventsAllotted.mystery}<br>
+        Engineering: ${eventsAllotted.engineering}<br>
+        Drogone: ${eventsAllotted.drogone}<br>
+        </b>
+        Please keep in mind the following details upon arrival for PsiFi XI on Day 1.<br>
+        You guys need to report at 8am on the 9th of January and submit the required documents and collect their teams’ ID tags, folders and handbooks.<br>
+        1) All team members are expected to bring their student ID card/CNIC/B-form/National Identification<br>
+        2) All teams are expected to bring a copy of their Paid Vouchers or any other Proof of Payment<br>
+        3) Team leaders will confirm their teams’ events, participant details, submit any required<br>
+        4) All team members are expected to bring 2 photographs with them to ensure a smooth registrations process and teams participating in DD and SCB are suppose to bring atleast 3 lab coats with them.<br>
+        5) Team who opt for accomodations need to submit their original CNIC or Rupees 2000 as a security deposit in order to get a temporary smart card<br>
+        <br>
+        A final email containing everything related to theme and other details regarding accomodation would be sent to you in the next week.<br>
+        <br>
+        <b>It is strongly encouraged to download the PSIFI app since all notifications will be conveyed via the app: https://play.google.com/store/apps/details?id=com.spades.psifixi</b><br>
+        <br>
+        In case of any queries please feel free to contact us at reg.psifi@gmail.com.<br>
+        See you this January in the highest of spirits!<br>
+        <br>
+        Regards,<br>
+        Convening Committee,<br>
+        SPADES PSIFI
+        </p>
+        </div>`
     };
 
     transporter.sendMail(mailOptions, function(error, info){

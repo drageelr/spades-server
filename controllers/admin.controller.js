@@ -465,10 +465,10 @@ exports.getAllInfo = async (req, res, next) =>
         let eDrogone = req.query.drogone;
         if(req.query.pass == password)
         {
-            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Selected', 'Paid', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Head_Delegate_Acc', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Phone_1', 'Acc_1', 'Delegate_2', 'Email_2', 'Phone_2', 'Acc_2', 'Delegate_3', 'Email_3', 'Phone_3', 'Acc_3', 'Delegate_4', 'Email_4', 'Phone_4', 'Acc_4'];
+            let csvFields = ['#', 'Team_ID', 'Team_Name', 'Selected', 'Paid', 'Institution_Name', 'Head_Delegate_Name', 'Head_Delegate_Email', 'Head_Delegate_Phone', 'Head_Delegate_Acc', 'Events_Allotted', 'Number_of_Events', 'Logical', 'Mystery', 'Engineering', 'Drogone', 'Delegate_1', 'Email_1', 'Phone_1', 'Acc_1', 'Delegate_2', 'Email_2', 'Phone_2', 'Acc_2', 'Delegate_3', 'Email_3', 'Phone_3', 'Acc_3', 'Delegate_4', 'Email_4', 'Phone_4', 'Acc_4'];
             let csvObjArr = [];
             let teamFields = ['teamID', 'name', 'verified', 'paid'];
-            let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone'];
+            let eventFields = ['allotted', 'number', 'logical', 'mystery', 'engineering', 'drogone'];
             let memberFields = ['name', 'email', 'phone', 'accomodation'];
             let teams = await Team.find({registered: true}, '_id teamID name headDelegateID verified paid');
             let eventSearchCheck = false;
@@ -605,7 +605,7 @@ exports.getAllInfo = async (req, res, next) =>
                 }
 
                 // Add Event Data
-                let event = await Event.findOne({teamID: teams[tIndex]._id}, 'number logical mystery engineering drogone');
+                let event = await Event.findOne({teamID: teams[tIndex]._id}, 'allotted number logical mystery engineering drogone');
                 for(let j = 0; j < eventFields.length; j++)
                 {
                     if(event)

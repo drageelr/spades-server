@@ -61,3 +61,4 @@ Spades Server
 ## API version 16:
 1. Get All Info API in Sheets.html
 2. Event Allotment API
+3. Allotted Event Status in Get All Info API

@@ -720,6 +720,7 @@ exports.teamQR = async (req, res, next) =>
             {
                 let paramsQ = req.query;
                 let teamIDString = 'PSI-' + paramsQ.type + '-' + paramsQ.tID;
+                console.log('TeamIDString: ' + teamIDString);
                 let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
                 if(teamReq)
                 {

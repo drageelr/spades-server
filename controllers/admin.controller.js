@@ -720,12 +720,11 @@ exports.teamQR = async (req, res, next) =>
             {
                 let paramsQ = req.query;
                 let teamIDString = 'PSI-' + paramsQ.type + '-' + paramsQ.tID;
-                console.log('TeamIDString: ' + teamIDString);
                 let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
                 if(teamReq)
                 {
-                    let token = jwt.sign(teamReq._id);
-                    res.redirect('/admin/voucherQR.html?token=' + token);
+                    let tokenReq = jwt.sign(teamReq._id);
+                    res.json({status: 200, message: 'Logged In!', token: tokenReq});
                 }
                 else
                 {

@@ -30,7 +30,7 @@ router.get('/adminpanel.html', jwt.verifyAdmin);
 
 router.get('/sheets.html', jwt.verifyAdmin);
 
-router.get('/voucherQR', jwt.verify);
+router.get('/voucherQR.html', jwt.verify);
 
 // router.get('/delete', adminController.deleteTeamData);
 
@@ -51,7 +51,7 @@ router.get('/toggleReg', adminController.toggleReg);
 //router.get('/member/:inst/:tID/:mID');
 
 router.get('/team/:type/:tID', (req, res, next) => {
-    res.redirect('/admin/loginQR?type=' + req.params.type + '&tID=' + req.params.tID);
+    res.redirect('/admin/loginQR.html?type=' + req.params.type + '&tID=' + req.params.tID);
 });
 
 router.use('/', express.static('admin'));

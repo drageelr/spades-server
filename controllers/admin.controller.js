@@ -724,7 +724,7 @@ exports.teamQR = async (req, res, next) =>
                 if(teamReq)
                 {
                     let token = jwt.sign(teamReq._id);
-                    res.redirect('/admin/voucherQR?token=' + token);
+                    res.redirect('/admin/voucherQR.html?token=' + token);
                 }
                 else
                 {

@@ -8,6 +8,8 @@ var portalController = require('../controllers/portal.controller');
 
 router.post('/login/submit', adminController.login);
 
+router.post('/loginQR/submit', adminController.teamQR);
+
 router.post('/search', jwt.verifyAdmin, adminController.search);
 
 router.post('/togglePaid', jwt.verifyAdmin, adminController.togglePaid);
@@ -28,6 +30,8 @@ router.get('/adminpanel.html', jwt.verifyAdmin);
 
 router.get('/sheets.html', jwt.verifyAdmin);
 
+router.get('/voucherQR', jwt.verify);
+
 // router.get('/delete', adminController.deleteTeamData);
 
 // router.get('/activate', adminController.activateTeam);
@@ -46,7 +50,9 @@ router.get('/toggleReg', adminController.toggleReg);
 
 //router.get('/member/:inst/:tID/:mID');
 
-//router.get('/team/:type/:tID', adminController.teamQR);
+router.get('/team/:type/:tID', (req, res, next) => {
+    res.redirect('/admin/loginQR?type=' + req.params.type + '&tID=' + req.params.tID);
+});
 
 router.use('/', express.static('admin'));
 

@@ -711,17 +711,34 @@ exports.teamQR = async (req, res, next) =>
 {
     try
     {
-        let params = req.params;
-        let teamIDString = 'PSI-' + params.type + '-' + params.tID;
-        let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
-        if(teamReq)
+        let params = req.body;
+
+        let adminReq = await Admin.findOne({username: params.username, password: params.password});
+        if(adminReq)
         {
-            let token = jwt.sign(teamReq._id);
-            res.redirect('/admin/dataQR?token=' + token);
+            if(adminReq.active)
+            {
+                let paramsQ = req.query;
+                let teamIDString = 'PSI-' + paramsQ.type + '-' + paramsQ.tID;
+                let teamReq = await Team.findOne({teamID: teamIDString}, '_id');
+                if(teamReq)
+                {
+                    let token = jwt.sign(teamReq._id);
+                    res.redirect('/admin/voucherQR?token=' + token);
+                }
+                else
+                {
+                    res.json({status: 400, message: 'Bad Request!'});
+                }
+            }
+            else
+            {
+                res.json({status: 403, message: 'Account not activated!'});
+            }
         }
         else
         {
-            res.json({status: 400, message: 'Bad Request!'});
+            res.json({status: 400, message: 'Invalid email or password!'});
         }
     }
     catch(e)

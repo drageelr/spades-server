@@ -290,6 +290,24 @@ exports.viewData = async (req, res, next) =>
             resObj.member[i] = membersReq[i];
         }
 
+        if(teamReq.verified)
+        {
+            resObj.verified = "Yes";
+        }
+        else
+        {
+            resObj.verified = "No";
+        }
+
+        if(teamReq.paid)
+        {
+            resObj.paid = "Yes";
+        }
+        else
+        {
+            resObj.paid = "No";
+        }
+        
         res.json(resObj);
     }
     catch(e)

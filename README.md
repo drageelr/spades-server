@@ -65,3 +65,4 @@ Spades Server
 
 ## API version 17:
 1. Team QR Code API Added
+2. Added Verified and Paid in View Data

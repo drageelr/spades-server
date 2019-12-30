@@ -303,7 +303,7 @@ exports.viewData = async (req, res, next) =>
             console.log('n');
             resObj.event.allotted = "No";
         }
-        console.log("Event Allotted: " + resObj.event.allotted);
+        console.log("Event Allotted: " + resObj.event);
         
         res.json(resObj);
     }

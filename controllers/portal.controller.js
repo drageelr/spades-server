@@ -277,7 +277,14 @@ exports.viewData = async (req, res, next) =>
         instReq.createdAt = undefined;
         instReq.updatedAt = undefined;
         resObj.inst = instReq;
-        resObj.event = eventReq;
+        //resObj.event = eventReq;
+        let eventFields = ['number', 'logical', 'mystery', 'engineering', 'drogone', 'explain', 'ambassadorName', 'ambassadorPhone', 'allotted'];
+        resObj.event = {};
+        for(let f of eventFields)
+        {
+            resObj.event[f] = eventReq[f];
+        }
+        
         resObj.member = [];
         for(let i = 0; i < membersReq.length; i++)
         {
@@ -293,18 +300,8 @@ exports.viewData = async (req, res, next) =>
         // Extra Stuff
         resObj.verified = teamReq.verified ? "Yes" : "No";
         resObj.paid = teamReq.paid ? "Yes" : "No";
-        if(eventReq.allotted)
-        {
-            console.log('y');
-            resObj.event.allotted = "Yes";
-        }
-        else
-        {
-            console.log('n');
-            resObj.event.allotted = "No";
-        }
-        console.log("Event Allotted: " + resObj.event);
-        
+        resObj.event.allotted = resObj.event.allotted ? "Yes" : "No";
+
         res.json(resObj);
     }
     catch(e)

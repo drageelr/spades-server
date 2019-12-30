@@ -301,6 +301,7 @@ exports.viewData = async (req, res, next) =>
         {
             resObj.event.allotted = "No";
         }
+        console.log("Event Allotted: " + resObj.event.allotted);
         
         res.json(resObj);
     }

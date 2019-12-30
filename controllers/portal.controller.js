@@ -295,10 +295,12 @@ exports.viewData = async (req, res, next) =>
         resObj.paid = teamReq.paid ? "Yes" : "No";
         if(eventReq.allotted)
         {
+            console.log('y');
             resObj.event.allotted = "Yes";
         }
         else
         {
+            console.log('n');
             resObj.event.allotted = "No";
         }
         console.log("Event Allotted: " + resObj.event.allotted);

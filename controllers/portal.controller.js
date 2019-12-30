@@ -293,8 +293,14 @@ exports.viewData = async (req, res, next) =>
         // Extra Stuff
         resObj.verified = teamReq.verified ? "Yes" : "No";
         resObj.paid = teamReq.paid ? "Yes" : "No";
-        resObj.event.allotted = eventReq.allotted ? "Yes" : "No";
-
+        if(eventReq.allotted)
+        {
+            resObj.event.allotted = "Yes";
+        }
+        else
+        {
+            resObj.event.allotted = "No";
+        }
         
         res.json(resObj);
     }

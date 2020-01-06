@@ -757,7 +757,7 @@ exports.getAllDel = async (req, res, next) =>
                 for(let m = 0; m < members.length; m++)
                 {
                     csvObjArr[delCount] = {};
-                    csvObjArr[delCount][csvFields[0]] = teams[teamIDs[t].index]._id;
+                    csvObjArr[delCount][csvFields[0]] = teams[teamIDs[t].index].teamID;
                     for(let f = 0; f < memberFields.length; f++)
                     {
                         csvObjArr[delCount][csvFields[f + 1]] = members[m][memberFields[f]];

@@ -46,6 +46,8 @@ router.get('/fixTeams', adminController.fixInvalidTeams);
 
 router.get('/getAllInfo', jwt.verifyAdmin, adminController.getAllInfo);
 
+router.get('/getAllDel', adminController.getAllDel);
+
 router.get('/toggleReg', adminController.toggleReg);
 
 //router.get('/member/:inst/:tID/:mID');

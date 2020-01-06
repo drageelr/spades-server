@@ -67,3 +67,6 @@ Spades Server
 1. Team QR Code API Added
 2. Added Verified and Paid in View Data
 3. Added Event Allotted in View Data
+
+## API version 18:
+1. Get All Del API Added

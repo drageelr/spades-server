@@ -707,6 +707,56 @@ exports.getAllInfo = async (req, res, next) =>
     }
 }
 
+exports.getAllDel = async (req, res, next) =>
+{
+    try
+    {
+        if(req.query.pass == password)
+        {
+            let csvFields = ['First_Name', 'LastName', 'Gender', 'DOB', 'Email', 'Phone', 'City'];
+            let csvObjArr = [];
+            let teams = await Team.find({registered: true}, '_id');
+            let delCount = 0;
+            let memberFields = ['firstName', 'lastName', 'gender', 'birthDate', 'email', 'phone', 'city'];
+            for(let t = 0; t < teams.length; t++)
+            {
+                let members = await Member.find({teamID: teams[t]._id}, 'firstName lastName gender birthDate email phone city');
+                for(let m = 0; m < members.length; m++)
+                {
+                    csvObjArr[delCount] = {};
+                    for(let f = 0; f < memberFields.length; f++)
+                    {
+                        csvObjArr[delCount][csvFields[f]] = members[m][memberFields[f]];
+                    }
+                }
+            }
+
+            let path = './temp/AllDelegates.csv';
+
+            parseAsync(csvObjArr, {csvFields})
+            .then(csv => {
+                fs.writeFile(path, csv, (er, data) => {
+                    if(er)
+                    {
+                        res.json({status: 999, message: 'Failure to Create File!'});
+                    }
+                    else
+                    {
+                        res.download(path);
+                    }
+                });
+            })
+            .catch(err => console.error(err));
+            
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
 exports.teamQR = async (req, res, next) =>
 {
     try

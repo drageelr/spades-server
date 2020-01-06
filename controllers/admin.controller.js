@@ -724,10 +724,13 @@ exports.getAllDel = async (req, res, next) =>
             let teamIDs = [];
             for(let i = 0; i < teams.length; i++)
             {
-                teamIDs[i] = {};
-                teamIDs[i].teamID = teams[i].teamID;
-                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
-                teamIDs[i].index = i;
+                if(teams[i].teamID)
+                {
+                    teamIDs[i] = {};
+                    teamIDs[i].teamID = teams[i].teamID;
+                    teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                    teamIDs[i].index = i;
+                }
             }
             
             // Sort TeamIDs
@@ -751,7 +754,7 @@ exports.getAllDel = async (req, res, next) =>
             }
 
 
-            for(let t = 0; t < teams.length; t++)
+            for(let t = 0; t < teamIDs.length; t++)
             {
                 let members = await Member.find({teamID: teams[teamIDs[t]]._id}, 'firstName lastName gender birthDate email phone city');
                 for(let m = 0; m < members.length; m++)

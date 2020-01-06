@@ -715,7 +715,7 @@ exports.getAllDel = async (req, res, next) =>
         {
             let csvFields = ['Team_ID', 'First_Name', 'LastName', 'Gender', 'DOB', 'Email', 'Phone', 'City'];
             let csvObjArr = [];
-            let teams = await Team.find({registered: true, paid: true}, '_id');
+            let teams = await Team.find({registered: true, paid: true}, '_id teamID');
             let delCount = 0;
             let memberFields = ['firstName', 'lastName', 'gender', 'birthDate', 'email', 'phone', 'city'];
 
@@ -724,14 +724,10 @@ exports.getAllDel = async (req, res, next) =>
             let teamIDs = [];
             for(let i = 0; i < teams.length; i++)
             {
-                if(teams[i].teamID)
-                {
-                    teamIDs[i] = {};
-                    teamIDs[i].teamID = teams[i].teamID;
-                    teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
-                    teamIDs[i].index = i;
-                    console.log('hi');
-                }
+                teamIDs[i] = {};
+                teamIDs[i].teamID = teams[i].teamID;
+                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                teamIDs[i].index = i;
             }
             
             // Sort TeamIDs

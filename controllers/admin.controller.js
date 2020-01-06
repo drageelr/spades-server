@@ -753,11 +753,11 @@ exports.getAllDel = async (req, res, next) =>
 
             for(let t = 0; t < teamIDs.length; t++)
             {
-                let members = await Member.find({teamID: teams[teamIDs[t]]._id}, 'firstName lastName gender birthDate email phone city');
+                let members = await Member.find({teamID: teams[teamIDs[t].index]._id}, 'firstName lastName gender birthDate email phone city');
                 for(let m = 0; m < members.length; m++)
                 {
                     csvObjArr[delCount] = {};
-                    csvObjArr[delCount][csvFields[0]] = teams[teamIDs[t]]._id;
+                    csvObjArr[delCount][csvFields[0]] = teams[teamIDs[t].index]._id;
                     for(let f = 0; f < memberFields.length; f++)
                     {
                         csvObjArr[delCount][csvFields[f + 1]] = members[m][memberFields[f]];

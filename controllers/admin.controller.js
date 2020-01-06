@@ -728,6 +728,7 @@ exports.getAllDel = async (req, res, next) =>
                     {
                         csvObjArr[delCount][csvFields[f]] = members[m][memberFields[f]];
                     }
+                    delCount++;
                 }
             }
 

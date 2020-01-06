@@ -713,23 +713,63 @@ exports.getAllDel = async (req, res, next) =>
     {
         if(req.query.pass == password)
         {
-            let csvFields = ['First_Name', 'LastName', 'Gender', 'DOB', 'Email', 'Phone', 'City'];
+            let csvFields = ['Team_ID', 'First_Name', 'LastName', 'Gender', 'DOB', 'Email', 'Phone', 'City'];
             let csvObjArr = [];
-            let teams = await Team.find({registered: true}, '_id');
+            let teams = await Team.find({registered: true, paid: true}, '_id');
             let delCount = 0;
             let memberFields = ['firstName', 'lastName', 'gender', 'birthDate', 'email', 'phone', 'city'];
+
+
+            // Store TeamIDs Seperately
+            let teamIDs = [];
+            for(let i = 0; i < teams.length; i++)
+            {
+                teamIDs[i] = {};
+                teamIDs[i].teamID = teams[i].teamID;
+                teamIDs[i].ID = teams[i].teamID.substr(teams[i].teamID.length - 5, 5);
+                teamIDs[i].index = i;
+            }
+            
+            // Sort TeamIDs
+            for(let i = 0; i < teamIDs.length; i++)
+            {
+                for(let j = 0; j < teamIDs.length - i - 1; j++)
+                {
+                    if(teamIDs[j].ID > teamIDs[j + 1].ID)
+                    {
+                        let tempTID = teamIDs[j].teamID;
+                        let tempID = teamIDs[j].ID;
+                        let tempI = teamIDs[j].index;
+                        teamIDs[j].teamID = teamIDs[j + 1].teamID;
+                        teamIDs[j].ID = teamIDs[j + 1].ID;
+                        teamIDs[j].index = teamIDs[j + 1].index;
+                        teamIDs[j + 1].teamID = tempTID;
+                        teamIDs[j + 1].ID = tempID;
+                        teamIDs[j + 1].index = tempI;
+                    }
+                }
+            }
+
+
             for(let t = 0; t < teams.length; t++)
             {
-                let members = await Member.find({teamID: teams[t]._id}, 'firstName lastName gender birthDate email phone city');
+                let members = await Member.find({teamID: teams[teamIDs[t]]._id}, 'firstName lastName gender birthDate email phone city');
                 for(let m = 0; m < members.length; m++)
                 {
                     csvObjArr[delCount] = {};
+                    csvObjArr[delCount][csvFields[0]] = teams[teamIDs[t]]._id;
                     for(let f = 0; f < memberFields.length; f++)
                     {
-                        csvObjArr[delCount][csvFields[f]] = members[m][memberFields[f]];
+                        csvObjArr[delCount][csvFields[f + 1]] = members[m][memberFields[f]];
                     }
                     delCount++;
                 }
+                csvObjArr[delCount] = {};
+                for(let f = 0; f < csvFields.length; f++)
+                {
+                    csvObjArr[delCount][csvFields[f]] = '-';
+                }
+                delCount++;
             }
 
             let path = './temp/AllDelegates.csv';

@@ -70,3 +70,6 @@ Spades Server
 
 ## API version 18:
 1. Get All Del API Added
+
+## API version 19:
+1. Schedule APIs Added

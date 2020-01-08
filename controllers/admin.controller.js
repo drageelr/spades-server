@@ -6,6 +6,7 @@ var Member = require('../models/member.model');
 var Admin = require('../models/admin.model');
 var Event = require('../models/event.model');
 var Config = require('../models/config.model');
+var Schedule = require('../models/schedule.model');
 var jwt = require('../services/jwt');
 var transporter = require('../services/transporter');
 const { parseAsync } = require('json2csv');
@@ -963,6 +964,102 @@ exports.allotEvents = async (req, res, next) =>
                 transporter.sendEventAllotment(teamReq.email, teamReq.teamID, events, params.number);
                 res.json({status: 200, message: 'Events Allotted!'});
             }
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.getSchedule = async (req, res, next) =>
+{
+    try
+    {
+        let schedules = await Schedule.find();
+        let resObj = {status: 200, message: 'Fetched Schedule!', events: []};
+        
+        let scheduleFields = ['name', 'round', 'startOrg', 'endOrg', 'type', 'venue', 'desc'];
+        for(let s = 0; s < schedules.length; s++)
+        {
+            resObj.events[s] = {};
+            for(let f = 0; f < scheduleFields.length; f++)
+            {
+                if(schedules[s][scheduleFields[f]])
+                {
+                    resObj.events[s][scheduleFields[f]] = schedules[s][scheduleFields[f]];
+                }
+                else
+                {
+                    resObj.events[s][scheduleFields[f]] = false;
+                }
+            }
+
+            if(schedules[s].startDelay)
+            {
+                let newStartTime = new Date(schedules[s].startOrg.getTime() + schedules[s].startDelay * 6000);
+                resObj.events[s].startChanged = newStartTime;
+            }
+            else
+            {
+                resObj.events[s].startChanged = schedules[s].startOrg;
+            }
+            if(schedules[s].endDelay)
+            {
+                let newEndTime = new Date(schedules[s].endOrg.getTime() + schedules[s].endDelay * 6000);
+                resObj.events[s].endChanged = newEndTime; 
+            }
+            else
+            {
+                resObj.events[s].endChanged = schedules[s].endOrg;
+            }
+        }
+
+        res.json(resObj);
+
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.setDelay = async (req, res, next) =>
+{
+    try
+    {
+        let params = req.body;
+        let scheduleReq = await Schedule.find({name: params.name, round: params.round});
+        if(scheduleReq)
+        {
+            await Schedule.findByIdAndUpdate(scheduleReq._id, {startDelay: scheduleReq.startDelay + params.startDelay, endDelay: scheduleReq.endDelay + params.endDelay});
+        }
+
+        res.json({status: 200, message: 'Done!'});
+    }
+    catch(e)
+    {
+        console.log(e);
+        res.json({status: 500, message: 'Internal Server Error!'});
+    }
+}
+
+exports.addSchedule = async (req, res, next) =>
+{
+    try
+    {
+        if(req.query.pass == password)
+        {
+            let params = req.body;
+            let newStartTime = new Date(params.startOrg);
+            let newEndTime = new Date(params.endOrg);
+            params.startOrg = newStartTime;
+            params.endOrg = newEndTime;
+            let scheduleReq = new Schedule(params);
+            await scheduleReq.save();
+            res.json({status: 200, message: 'Done!'});
         }
     }
     catch(e)
